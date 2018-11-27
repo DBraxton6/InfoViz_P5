@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+   <script type="text/javascript" src="d3.js"></script>
+    <style>
+    body {
+	  font: 12px sans-serif;
+	}
+  .selected {
+    stroke: red;
+    fill:red;
+  }
+	path.domain {
+		fill: none;
+		stroke-width: 2px;
+		stroke: black;
+	}
+	#wrapper {
+		clear:both;
+	}
+	#p5Map {
+	    float:left;
+	}
+    </style>
+
+    <title>P5 by: Daisha B. & Courtney R.</title>
+   </head>
+
+   <body>
+   <div id="wrapper">
+	  <div id="p5Map"></div>
+    <div id="hoverData">
+          <strong>Total Movies:</strong> <span id="movieTotal"></span><br/>
+          <strong>Total Facebook Likes:</strong> <span id="fbLikes"></span><br/>
+         </div>
+   </div>
+  <script>
+
+  //set variables for height and width
+  var width =500;
+	var height= 500;
+
+      // D3 to grab all the data needed from "movies.csv"
+      d3.csv('movies.csv', function(csv) {
+          // Can use rollup function from P2 to total number of times
+          // an actor's name shows up (this will give us total movies
+          // they are in according to the dataset)
+          for (var i=0; i<csv.length; ++i) {
+    			csv[i].actor_1_name = csv[i].actor_1_name;
+    			csv[i].actor_2_name = csv[i].actor_2_name;
+          csv[i].actor_3_name = csv[i].actor_3_name;
+
+          //only need facebook likes for 1 actor (I think) for circle/
+          // diamter display
+          csv[i].actor_1_facebook_likes = Number(csv[i].actor_1_facebook_likes);
+          csv[i].gross = Number(csv[i].gross);
+    	    }
+
+          console.log(csv);
+
+        var map = d3.select("#map")
+  		                .append("svg:svg")
+  		                .attr("width",width)
+  		                .attr("height",height);
+
+
+  	     var temp= map.selectAll("circle")
+  		   .data(csv)
+  		   .enter()
+  		   .append("circle")
+  		   .attr("id",function(d,i) {return i;} )
+  		   .attr("stroke", "black")
+  		   .attr("cx", function(d,i) {return i+1;})  //need values...randomize position on screen?
+  		   .attr("cy", function(d,i) {return i+1;})  //need values...randomize position on screen?
+  		   .attr("r", function(d) { return d.actor_1_facebook_likes; })
+         .on("click", function (d, i) {
+
+           //when clicked, display the circle that is selected
+  					map.selectAll("circle").classed("selected", function (x, y) {
+  						return i == y;
+  					});
+            //display the text for each value
+            // this is for displaying the info for our hover boxes
+            // will probably need to use rollup function to get movie total
+
+  					//document.getElementById("movieTotal").textContent = d.SATM;
+  					document.getElementById("fbLikes").textContent = d.actor_1_facebook_likes;
+  				});
+
+       });
+
+
+  </script>
+  </body>
+</html>
