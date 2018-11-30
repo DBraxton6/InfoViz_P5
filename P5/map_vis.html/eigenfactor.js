@@ -31,14 +31,14 @@ svg text::selection {
     background: none;
 }
 
-    text { font-family: flama, sans-serif; font-weight: bold; }
+    text { font-family: Karla, sans-serif; font-weight: bold; }
 
     #maintitle rect, .maintitle rect { fill: none; }
-    #maintitle text, .maintitle text { fill: #555; font-size: 1em; font-family: flama, sans-serif; font-weight: bold;  }
+    #maintitle text, .maintitle text { fill: #555; font-size: 1em; font-family: Karla, sans-serif; font-weight: bold;  }
 
     g.tooltip {}
     g.tooltip rect.background {fill: #000000; stroke: #333333; fill-opacity: 0.8}
-    g.tooltip text.text {font-family: flama, sans-serif; font-weight: bold; font-size: 12px;}
+    g.tooltip text.text {font-family: Karla, sans-serif; font-weight: bold; font-size: 12px;}
     g.tooltip text.text tspan.title {fill: #ffffff;}
     g.tooltip text.text tspan.detail {fill: #aaaaaa;}
 
@@ -57,14 +57,12 @@ function svgshadowfilter() {
  * Load and parse data
  */
 
-const currentYear = `2005`;
+//YEAR IS NOT IN OUR DATA SET
+//const currentYear = `2005`;
 
 async function loadMapRawData() {
   return await Promise.all([
-    d3.text(`data/science${currentYear}links.txt`),
-    d3.text(`data/science${currentYear}nodes.txt`),
-    d3.text(`data/science${currentYear}tree.txt`),
-    d3.json("data/mapgml.json")
+    d3.csv(`data/movies.csv`)
   ]);
 }
 async function loadRawData(year = currentYear) {
@@ -81,37 +79,38 @@ async function loadRawSankeyData(year = currentYear) {
   ]);
 }
 
-(async function() {
-  if (vis === "sankey") {
-    data.years = [8, 6, 4, 2, 0].map(e => +currentYear - e + "");
-    data.trees = await Promise.all(
-      data.years.map(async y => {
-        let _nodes, _tree, _idsByName;
-        [_nodes, _tree] = await loadRawSankeyData(y);
-        _idsByName = IDsByName(ids(_nodes));
-        return {
-          year: y,
-          tree: tree(_tree, _idsByName)
-        };
-      })
-    );
-  } else {
-    let _links, _nodes, _tree, _nodesmap;
-    if (vis === "map") {
-      [_links, _nodes, _tree, _nodesmap] = await loadMapRawData();
-      data.nodesmap = _nodesmap;
-    } else {
-      [_links, _nodes, _tree] = await loadRawData(currentYear);
-    }
+// (async function() {
+//   if (vis === "sankey") {
+//     data.years = [8, 6, 4, 2, 0].map(e => +currentYear - e + "");
+//     data.trees = await Promise.all(
+//       data.years.map(async y => {
+//         let _nodes, _tree, _idsByName;
+//         [_nodes, _tree] = await loadRawSankeyData(y);
+//         _idsByName = IDsByName(ids(_nodes));
+//         return {
+//           year: y,
+//           tree: tree(_tree, _idsByName)
+//         };
+//       })
+//     );
+//   } else {
+//     let _links, _nodes, _tree, _nodesmap;
+//     if (vis === "map") {
+//       [_links, _nodes, _tree, _nodesmap] = await loadMapRawData();
+//       data.nodesmap = _nodesmap;
+//     } else {
+//       [_links, _nodes, _tree] = await loadRawData(currentYear);
+//     }
 
-    data.flowEdges = flowEdges(_links);
-    data.ids = ids(_nodes);
-    data.IDsByName = IDsByName(data.ids);
-    data.tree = tree(_tree, data.IDsByName);
-  }
-  d3.select(window).on("resize", redraw);
-  redraw();
-})();
+//     data.flowEdges = flowEdges(_links);
+//     data.ids = ids(_nodes);
+//     data.IDsByName = IDsByName(data.ids);
+//     data.tree = tree(_tree, data.IDsByName);
+//   }
+//   d3.select(window).on("resize", redraw);
+//   redraw();
+// })();
+
 
 var wait = 20;
 function redraw() {
@@ -321,6 +320,7 @@ function tooltip(
     .attr("y", 0)
     .style("filter", "url(#drop-shadow)");
 
+// two key/values max rn
   const text = tooltip
     .append("text")
     .classed("text", true)
@@ -330,7 +330,7 @@ function tooltip(
   function appendTspan(t, c, x, dy, text) {
     if (text !== "")
       t.append("tspan")
-        .classed(c, true)
+        .classed(c, true) //if labeled then open box
         .attr("x", x)
         .attr("dy", dy)
         .text(text);
