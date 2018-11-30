@@ -3,17 +3,13 @@
  */
 
 @font-face {
-  font-family: "flama";
-  src: url("assets/flamamediumregular.woff2") format("woff2"),
-    url("assets/flamamediumregular.woff") format("woff");
+  font-family: "Montserrat", sans-serif;
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "flama";
-  src: url("assets/flamalightregular.woff2") format("woff2"),
-    url("assets/flamalightregular.woff") format("woff");
+  font-family: 'Karla', sans-serif;
   font-weight: normal;
   font-style: normal;
 }
@@ -24,7 +20,7 @@ body {
   /*overflow: hidden;*/
   background: #f0f0f0;
   color: #333;
-  font-family: flama, sans-serif;
+  font-family: 'Karla', sans-serif;
   line-height: 1.5;
 }
 

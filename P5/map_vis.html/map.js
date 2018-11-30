@@ -24,7 +24,9 @@ config.titleHeight = 35;
  * Build the chart
  */
 function buildchart() {
+  //new list == all names of actors TODO
   results.journalsLookup = {};
+  //add id to list above
   data.ids.forEach(d => (results.journalsLookup[d.id] = d));
 
   const svg = d3
@@ -40,6 +42,7 @@ function buildchart() {
       `
     );
 
+  //map outline
   svg
     .append("rect")
     .attr("id", "main")
@@ -47,28 +50,42 @@ function buildchart() {
     .attr("height", "100%")
     .attr("fill", "#f0f0f0");
 
+  //map
   const vis = svg
     .append("g")
     .attr("id", "vis")
     .attr("transform", `translate(0, ${config.titleHeight})`);
+  //magifying glass
   vis.append("circle").attr("id", "lens");
+
+  //lines between the circles
   vis.append("g").attr("id", "inout");
+
+  //circles - classes: journal labelled, journal
   vis.append("g").attr("id", "leaves");
 
+  //This is the actor's name as it'll appear on the corner when clicked
   svg.append("g").attr("id", "maintitle");
 
+  //what the curose will do
   svg.append("g").attr("id", "tooltip");
 
+  //hover and click?
   function handleMouseOver(d, i) {
+    //if hovering
     if (clicked === -1 || d.id === clicked)
       tooltip(
         "t-" + i,
         width,
         height,
+        //actor name TODO
         d.longLabel,
-        "Eigenfactor: " + cutAfter(d.eigenfactor, 6)
+        //FB likes TODO
+        "Number of Movies: " + cutAfter(d.movie_title, 6),
+        "Number of FB Likes: " + cutAfter(d.FBlikes, 8)
       );
-    else {
+    else { //if clicked TODO
+      // the IN: and OUT: parts.... ***change to "movies shared" and "movies total"
       const inArray = data.flowEdges.filter(
         e => e.source === d.id && e.target === clicked
       );
@@ -76,19 +93,23 @@ function buildchart() {
         e => e.source === clicked && e.target === d.id
       );
 
+      //currently math...
       let weightIn = inArray.length === 1 ? inArray[0].normalizedWeight : 0,
         weightOut = outArray.length === 1 ? outArray[0].normalizedWeight : 0;
 
       if (!weightIn && !weightOut)
         tooltip("t-" + i, width, height, d.longLabel);
 
+      //TODO movies shared
       tooltip(
         "t-" + i,
         width,
         height,
+        //this means name no more short v. long labels
         d.longLabel,
-        "IN:",
-        "OUT:",
+        "Movies Shared:",
+        //maybe NOT show movies total b/c hw will we go into that actor's info??
+        "Movies Total:",
         cutAfter(weightIn, 6),
         cutAfter(weightOut, 6)
       );
@@ -105,6 +126,7 @@ function buildchart() {
   */
   let posx = d3
     .scaleLinear()
+    //
     .domain(d3.extent(data.nodesmap, d => d.x))
     .range([-width / 2, width]);
   let posy = d3
@@ -112,9 +134,13 @@ function buildchart() {
     .domain(d3.extent(data.nodesmap, d => d.y))
     .range([-height / 2, height]);
 
+  //TODO
   results.nodesmap = {};
+  //every actor's placement - just change val names here
   data.nodesmap.forEach(d => (results.nodesmap[d.id] = [posx(d.x), posy(d.y)]));
+  //only grab eigenfactor (which will be num of movies in)
   results.leaves = data.tree.filter(d => "eigenfactor" in d);
+
   results.sectorById = new Map();
   results.leaves.forEach(d => {
     const sector = +d.path.split(":")[0];
@@ -128,6 +154,7 @@ function buildchart() {
     .enter()
     .append("g")
     .attr("id", d => (d.leafUid = DOM.uid("leaf")).id)
+    //TODO journal
     .classed("journal", true)
     .attr("transform", d => `translate(${results.nodesmap[d.id]})`)
     .on("mousemove", handleMouseOver)
@@ -135,11 +162,14 @@ function buildchart() {
 
   const r = 6;
 
+  //actual leaf circle
   leaf
     .append("circle")
-    .attr("r", d => r * (d.weight ? 0.33 + 3 * d.weight : 0.2))
+    //size of circle TODO - change weight to numofmovies
+    .attr("r", d => r * (d.weight ? 0.33 + 3 * d.weight : 0.2)) //if weight exists, mult ELSE make it 0.2
     .attr("fill", d => {
       const v = d.weight;
+      //TODO find out wtf .depth is
       while (d.depth > 1) d = d.parent;
       return getColorByIndexAndWeight({
         index: results.sectorById[d.id],
@@ -156,6 +186,7 @@ function buildchart() {
       "fill-opacity",
       d => (d.weight ? Math.sqrt(d.weight) * 0.7 + 0.2 : 0)
     )
+    //TODO change to "name"
     .text(d => d.label);
 
   lens.x = width * 0.5;
@@ -169,7 +200,6 @@ function buildchart() {
 /*
  * Interactions
  */
-
 function updatePositions(transition) {
   lens.radius = 50; //Math.sqrt(2.5 * width); // responsive, =50 in the original
 
@@ -178,10 +208,11 @@ function updatePositions(transition) {
     .attr("r", scaledRadius)
     .attr("transform", `translate(${[lens.x, lens.y]})`);
 
+  //TODO change .journal
   let change = d3.select("#leaves").selectAll(".journal");
   if (transition) change = change.transition().duration(200);
 
-  change.attr("transform", (d, i, e) => {
+  change.attr("transform", (d, i, e) => { //lol
     let pos = results.nodesmap[d.id].slice();
 
     let diffX = pos[0] - lens.x,
