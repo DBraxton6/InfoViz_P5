@@ -29,9 +29,9 @@ var svg = d3.select("#drawArea")
 
       actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) = 1;
       actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) = 1;
-      
+
       }
-      
+
 
 
       if(actors[d.actor_2_name]) {
@@ -48,8 +48,8 @@ var svg = d3.select("#drawArea")
 
         actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) = 1;
         actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) = 1;
-      
-      
+
+
     }
 
 
@@ -67,14 +67,14 @@ var svg = d3.select("#drawArea")
 
         actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) = 1;
         actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) = 1;
-       
-       
+
+
     }
 
-   
-    });
 
-  }); 
+    });
+    console.log(data);
+  });
 var me = 0;
   var pos = d3.json('nodesmap.json');
   var keys = {};
@@ -88,7 +88,7 @@ var me = 0;
 
 
 Object.keys(actors).forEach(function(key) {
-    
+
 });
 
 console.log(keys);

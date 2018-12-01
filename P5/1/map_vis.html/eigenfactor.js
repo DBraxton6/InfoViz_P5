@@ -127,34 +127,8 @@ var i = 0;
 
     });
 
-//YEAR IS NOT IN OUR DATA SET
-//const currentYear = `2005`;
 
-// async function loadMapRawData() {
-//   return await Promise.all([
-//     d3.text(`data/science${currentYear}links.txt`),
-    // d3.text(`data/science${currentYear}nodes.txt`),
-    // d3.text(`data/science${currentYear}tree.txt`),
-    // d3.json("data/mapgml.json")
-//   ]);
-// }
-// async function loadRawData(year = currentYear) {
-//   return await Promise.all([
-//     d3.text(`data/science${year}links_mo.txt`),
-//     d3.text(`data/science${year}nodes_mo.txt`),
-//     d3.text(`data/science${year}tree_mo.txt`)
-//   ]);
-// }
-// async function loadRawSankeyData(year = currentYear) {
-//   return await Promise.all([
-//     d3.text(`data/science${year}nodes_mo.txt`),
-//     d3.text(`data/science${year}tree_mo.txt`)
-//   ]);
-// }
-
-
-
-//TODO replace links, nodes, tree, nodemap with your shit
+//TODO replace links, nodes, tree, nodemap
 (async function() {
     //let _links, _nodes, _tree, _nodesmap;
     if (vis === "map") {
