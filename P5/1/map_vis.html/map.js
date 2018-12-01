@@ -27,7 +27,8 @@ function buildchart() {
   //new list == all names of actors TODO
   results.journalsLookup = {};
   //add id to list above
-  data.ids.forEach(d => (results.journalsLookup[d.id] = d));
+    //data.ids.forEach(d => (results.journalsLookup[d.id] = d));
+  actors.forEach(d => (results.journalsLookup[d.id] = d));
 
   const svg = d3
     .select("svg")
@@ -79,10 +80,10 @@ function buildchart() {
         width,
         height,
         //actor name TODO
-        d.longLabel,
+        d.name,
         //FB likes TODO
-        "Number of Movies: " + cutAfter(d.movie_title, 6),
-        "Number of FB Likes: " + cutAfter(d.FBlikes, 8)
+        "Number of Movies: " + d.movies,
+        "Number of FB Likes: " + d.likes
       );
     else { //if clicked TODO
       // the IN: and OUT: parts.... ***change to "movies shared" and "movies total"
@@ -124,27 +125,30 @@ function buildchart() {
     n.x = n.props.x = 1.5 * (bounds.width) * (n.props.origx) - .5 * bounds.width
     n.y = n.props.y = 1.5 * (bounds.height) * (n.props.origy) - .5 * bounds.height ;
   */
-  let posx = d3
-    .scaleLinear()
-    //
-    .domain(d3.extent(data.nodesmap, d => d.x))
-    .range([-width / 2, width]);
-  let posy = d3
-    .scaleLinear()
-    .domain(d3.extent(data.nodesmap, d => d.y))
-    .range([-height / 2, height]);
+  // let posx =
+  //   randomChoose(-width/2, width )
+  //  d3
+  //   .scaleLinear()
+    
+
+  //   .range([-width / 2, width]);
+  //   .domain(d3.extent(data.nodesmap, d => d.x))
+
+  // let posy = d3
+  //   .scaleLinear()
+  //   .domain(d3.extent(data.nodesmap, d => d.y))
+  //   .range([-height / 2, height]);
 
   //TODO
   results.nodesmap = {};
   //every actor's placement - just change val names here
   data.nodesmap.forEach(d => (results.nodesmap[d.id] = [posx(d.x), posy(d.y)]));
   //only grab eigenfactor (which will be num of movies in)
-  results.leaves = data.tree.filter(d => "eigenfactor" in d);
+  results.leaves = actors; //.forEach(function(d){ return d.movies;}); //data.tree.filter(d => "eigenfactor" in d);
 
   results.sectorById = new Map();
   results.leaves.forEach(d => {
-    const sector = +d.path.split(":")[0];
-    results.sectorById[d.id] = sector;
+    results.sectorById[d.id] = d.costars.length;
   });
 
   const leaf = d3
@@ -154,7 +158,7 @@ function buildchart() {
     .enter()
     .append("g")
     .attr("id", d => (d.leafUid = DOM.uid("leaf")).id)
-    //TODO journal
+    //addded journal clss
     .classed("journal", true)
     .attr("transform", d => `translate(${results.nodesmap[d.id]})`)
     .on("mousemove", handleMouseOver)
@@ -166,11 +170,11 @@ function buildchart() {
   leaf
     .append("circle")
     //size of circle TODO - change weight to numofmovies
-    .attr("r", d => r * (d.weight ? 0.33 + 3 * d.weight : 0.2)) //if weight exists, mult ELSE make it 0.2
+    .attr("r", d => r * (d.movies ? 0.33 + 3 * d.movies : 0.2)) //if weight exists, mult ELSE make it 0.2
     .attr("fill", d => {
-      const v = d.weight;
+      const v = d.movies;
       //TODO find out wtf .depth is
-      while (d.depth > 1) d = d.parent;
+      //while (d.depth > 1) d = d.parent;
       return getColorByIndexAndWeight({
         index: results.sectorById[d.id],
         weight: v
@@ -180,14 +184,14 @@ function buildchart() {
   leaf
     .append("text")
     //.attr("clip-path", d => d.clipUid)
-    .attr("x", d => 4 + r * (d.weight ? 0.33 + 3 * d.weight : 0.2))
+    .attr("x", d => 4 + r * (d.movies ? 0.33 + 3 * d.movies : 0.2))
     .attr("y", 2)
     .style(
       "fill-opacity",
-      d => (d.weight ? Math.sqrt(d.weight) * 0.7 + 0.2 : 0)
+      d => (d.movies ? Math.sqrt(d.movies) * 0.7 + 0.2 : 0)
     )
     //TODO change to "name"
-    .text(d => d.label);
+    .text(d => d.name);
 
   lens.x = width * 0.5;
   lens.y = height * 0.33;
@@ -231,12 +235,12 @@ function updatePositions(transition) {
     }
     pos[0] += (targetX - pos[0]) * 0.8;
     pos[1] += (targetY - pos[1]) * 0.8;
-
-    results.nodesmap[d.id].x0 = d.x0 = pos[0] =
+    //TODO JUST CHECK THIS
+    results.nodesmap[d.name].x0 = d.x0 = pos[0] =
       lens.x + zoom * (pos[0] - lens.x);
-    results.nodesmap[d.id].y0 = d.y0 = pos[1] =
+    results.nodesmap[d.name].y0 = d.y0 = pos[1] =
       lens.y + zoom * (pos[1] - lens.y);
-
+    //if in the lens or out
     if (dist < lens.radius) {
       d3.select(e[i]).classed("labeled", true);
     } else {
@@ -245,13 +249,16 @@ function updatePositions(transition) {
     return `translate(${pos})`;
   });
 
+  //Making the connections/lines!!!
   d3.select("#inout")
     .selectAll("path")
     .attr(
       "d",
       d =>
+        //cirle clicked
         "M" +
         [results.nodesmap[d.target].x0, results.nodesmap[d.target].y0] +
+        //circle directly affected
         "L" +
         [results.nodesmap[d.source].x0, results.nodesmap[d.source].y0]
     );
@@ -284,6 +291,7 @@ function add_interaction(chart) {
   svg.on("touch mousedown", zoomSlightly).call(drag);
 
   /* click on a journal */
+  //TODO checkthis
   svg.selectAll(".journal circle").on("click", click);
   svg.on("click", click);
 
@@ -314,9 +322,12 @@ function setTitle(title) {
   d3.select("svg g#maintitle rect").attr("width", !w ? 0 : w + 2 * 9);
 }
 
+//set of paths (or lines) to make
 function inout() {
+  //find the actor that's clicked (journal == actor)
   d3.selectAll(".journal").classed("clicked", d => d.id === clicked);
 
+  //if you're not the clicked actor, don't have a line
   if (clicked === -1) {
     d3.select("#inout")
       .transition()
@@ -324,19 +335,24 @@ function inout() {
     setTitle("");
     return;
   }
-
+  //the clicked actor get the title in the corner
   const main = results.journalsLookup[clicked];
   setTitle(main.longName);
 
+  //TODO wtf is this
   const links_out = data.flowEdges.filter(d => d.target === clicked);
 
   d3.select("#inout")
     .transition()
     .style("opacity", 1);
 
+  //be gray if you are not clicked AND your "links_out" of you knowing the clicked actor is 0
   d3.selectAll(".journal").classed(
     "gray",
     d =>
+    //TODO e is saying find out if one of your costars is the clicked actor and check the movies shared
+    //if its 0 AND you're in the lens, be gray
+    //SO make e == (e.costar == d.id).length
       d.id !== clicked && links_out.filter(e => e.source === d.id).length === 0
   );
 
@@ -348,6 +364,7 @@ function inout() {
     .enter()
     .append("path")
     .style("stroke", d => {
+      //TODO this determines line color and width - we need line wid to be 
       return getColorByIndexAndWeight({
         index: results.sectorById[d.source],
         weight: d.normalizedWeight
