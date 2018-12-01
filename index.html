@@ -38,6 +38,7 @@
 	var height= 800;
 
   // D3 to grab all the data needed from "movies.csv"
+<<<<<<< HEAD
   d3.csv('movies.csv', function(csv) {
       // Can use rollup function from P2 to total number of times
       // an actor's name shows up (this will give us total movies
@@ -117,27 +118,173 @@
               .attr("y1", function(d) { return d.source.y })
               .attr("x2", function(d) { return d.target.x })
               .attr("y2", function(d) { return d.target.y });
+=======
+  // d3.csv('movies.csv', function(csv) {
+  //     // Can use rollup function from P2 to total number of times
+  //     // an actor's name shows up (this will give us total movies
+  //     // they are in according to the dataset)
+  //     for (var i=0; i<csv.length; ++i) {
+		// 	csv[i].actor_1_name = csv[i].actor_1_name;
+		// 	csv[i].actor_2_name = csv[i].actor_2_name;
+  //     csv[i].actor_3_name = csv[i].actor_3_name;
+  //     csv[i].movie_title = csv[i].movie_title;
+
+  //     //only need facebook likes for 1 actor (I think) for circle/
+  //     // diamter display
+  //     csv[i].actor_1_facebook_likes = Number(csv[i].actor_1_facebook_likes);
+  //     csv[i].gross = Number(csv[i].gross);
+	 //    }
+
+
+
+  //     console.log(csv); /*<--used to test that data was entered correctly
+  //                           and that strings converted to integers */
+
+  //     var width = 960, height = 900, colors = d3.scale.category10();
+
+  //     var n = 1605, // number of nodes
+  //         m = 1607, // number of links
+  //         charge = -1000;
+
+  //     var svg = d3.select("body").append("svg")
+  //         .attr("width", width)
+  //         .attr("height", height)
+  //         .on("mousedown", create);
+
+  //     create();
+
+  //     function create () {
+  //       svg.selectAll(".link, .node").remove();
+  //       randomGraph(n, m, charge);
+  //     }
+
+  //     function randomGraph (n, m, charge) { //creates a random graph on n nodes and m links
+  //       var nodes = d3.range(n).map(Object),
+  //           list  = randomChoose(unorderedPairs(d3.range(n)), m),
+  //           links = list.map(function (a) { return {source: a[0], target: a[1]} });
+
+  //       var force = d3.layout.force()
+  //           .size([width, height])
+  //           .nodes(nodes)
+  //           .links(links)
+  //           .charge(charge)
+  //           .on("tick", tick)
+  //           .start();
+
+  //       var svgLinks = svg.selectAll(".link").data(links)
+  //         .enter().append("line")
+  //           .attr("class", "link");
+
+  //       var svgNodes = svg.selectAll(".node").data(nodes)
+  //         .enter().append("circle")
+  //           .attr("class", "node")
+  //           .attr("r", 3)
+  //           .style("fill", "white");
+
+  //       svgNodes.transition().duration(800)
+  //           .attr("r", function (d) { return 3 + 3 * d.weight })
+  //           .style("fill", function (d) { return colors(d.weight) });
+
+  //       svgLinks.transition().duration(300)
+  //           .style("stroke-width", 3);
+
+  //       function tick () {
+  //         svgNodes
+  //             .attr("cx", function(d) { return d.x })
+  //             .attr("cy", function(d) { return d.y });
+
+  //         svgLinks
+  //             .attr("x1", function(d) { return d.source.x })
+  //             .attr("y1", function(d) { return d.source.y })
+  //             .attr("x2", function(d) { return d.target.x })
+  //             .attr("y2", function(d) { return d.target.y });
+  //       }
+  //     }
+  //          var i = 0;
+
+    var actors = {};
+    d3.csv("movies.csv", function(data) {
+      //check csv 3 times to get all actors
+      data.forEach(function(d) {
+
+        if(actors[d.actor_1_name]) {
+          actors[d.actor_1_name].movies++;
+          // if (actors[d.actor_1_name].costars[d.actor_3_name]){
+
+          // }
+          actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) ? actors[d.actor_1_name].costars[d.actor_3_name]+1 : 1;
+          actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) ? actors[d.actor_1_name].costars[d.actor_2_name]+1 : 1;
+        } else {
+          actors[d.actor_1_name] = {
+          name: d.actor_1_name,
+          likes: d.actor_1_facebook_likes,
+          movies: 1,
+          costars: {}
+        };
+        actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) = 1;
+        actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) = 1;
+>>>>>>> be3dc1e8a5f343ec5a44df830c99236413559aa0
         }
-      }
 
-      function randomChoose (s, k) { // returns a random k element subset of s
-        var a = [], i = -1, j;
-        while (++i < k) {
-          j = Math.floor(Math.random() * s.length);
-          a.push(s.splice(j, 1)[0]);
-        };
-        return a;
-      }
 
-      function unorderedPairs (s) { // returns the list of all unordered pairs from s
-        var i = -1, a = [], j;
-        while (++i < s.length) {
-          j = i;
-          while (++j < s.length) a.push([s[i],s[j]])
+        if(actors[d.actor_2_name]) {
+          actors[d.actor_2_name].movies++;
+          actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) ? actors[d.actor_2_name].costars[d.actor_3_name]+1 : 1;
+          actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) ? actors[d.actor_2_name].costars[d.actor_1_name]+1 : 1;
+        } else {
+          actors[d.actor_2_name] = {
+          name: d.actor_2_name,
+          likes: d.actor_2_facebook_likes,
+          movies: 1,
+          costars: {}
         };
-        return a;
-      }
-       });
+          actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) = 1;
+          actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) = 1;
+        }
+
+
+        if(actors[d.actor_3_name]){
+          actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) ? actors[d.actor_3_name].costars[d.actor_2_name]+1 : 1;
+          actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) ? actors[d.actor_3_name].costars[d.actor_1_name]+1 : 1;
+         } else { //make a new var
+          actors[d.actor_3_name] = {
+          name: d.actor_3_name,
+          likes: d.actor_3_facebook_likes,
+          movies: 1,
+          costars: {}
+          };
+          actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) = 1;
+          actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) = 1;
+         }
+
+         
+
+          
+      });
+        
+    }); 
+    console.log(Object.keys(actors)[1]);
+
+    
+
+      // function randomChoose (s, k) { // returns a random k element subset of s
+      //   var a = [], i = -1, j;
+      //   while (++i < k) {
+      //     j = Math.floor(Math.random() * s.length);
+      //     a.push(s.splice(j, 1)[0]);
+      //   };
+      //   return a;
+      // }
+
+      // function unorderedPairs (s) { // returns the list of all unordered pairs from s
+      //   var i = -1, a = [], j;
+      //   while (++i < s.length) {
+      //     j = i;
+      //     while (++j < s.length) a.push([s[i],s[j]])
+      //   };
+      //   return a;
+      // }
+      //  });
 
 
   </script>
