@@ -30,95 +30,16 @@
    <body>
    <div id="wrapper">
 	  <div id="p5Map"></div>
+    <div id="drawArea"></div>
    </div>
   <script>
 
   //set variables for height and width
   var width =800;
+
 	var height= 800;
 
   // D3 to grab all the data needed from "movies.csv"
-<<<<<<< HEAD
-  d3.csv('movies.csv', function(csv) {
-      // Can use rollup function from P2 to total number of times
-      // an actor's name shows up (this will give us total movies
-      // they are in according to the dataset)
-      for (var i=0; i<csv.length; ++i) {
-			csv[i].actor_1_name = csv[i].actor_1_name;
-			csv[i].actor_2_name = csv[i].actor_2_name;
-      csv[i].actor_3_name = csv[i].actor_3_name;
-      csv[i].movie_title = csv[i].movie_title;
-
-      //only need facebook likes for 1 actor (I think) for circle/
-      // diamter display
-      csv[i].actor_1_facebook_likes = Number(csv[i].actor_1_facebook_likes);
-      csv[i].gross = Number(csv[i].gross);
-	    }
-
-
-
-      console.log(csv); /*<--used to test that data was entered correctly
-                            and that strings converted to integers */
-
-      var width = 1000, height = 900, colors = d3.scale.category10();
-
-      var n = 1605, // number of nodes
-          m = 1607, // number of links
-          charge = -1000;
-
-      var svg = d3.select("body").append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .on("mousedown", create);
-
-      create();
-
-      function create () {
-        svg.selectAll(".link, .node").remove();
-        randomGraph(n, m, charge);
-      }
-
-      function randomGraph (n, m, charge) { //creates a random graph on n nodes and m links
-        var nodes = d3.range(n).map(Object),
-            list  = randomChoose(unorderedPairs(d3.range(n)), m),
-            links = list.map(function (a) { return {source: a[0], target: a[1]} });
-
-        var force = d3.layout.force()
-            .size([width, height])
-            .nodes(nodes)
-            .links(links)
-            .charge(charge)
-            .on("tick", tick)
-            .start();
-
-        var svgLinks = svg.selectAll(".link").data(links)
-          .enter().append("line")
-            .attr("class", "link");
-
-        var svgNodes = svg.selectAll(".node").data(nodes)
-          .enter().append("circle")
-            .attr("class", "node")
-            .attr("r", 3)
-            .style("fill", "white");
-
-        svgNodes.transition().duration(800)
-            .attr("r", function (d) { return 3 + 3 * d.weight })
-            .style("fill", function (d) { return colors(d.weight) });
-
-        svgLinks.transition().duration(300)
-            .style("stroke-width", 3);
-
-        function tick () {
-          svgNodes
-              .attr("cx", function(d) { return d.x })
-              .attr("cy", function(d) { return d.y });
-
-          svgLinks
-              .attr("x1", function(d) { return d.source.x })
-              .attr("y1", function(d) { return d.source.y })
-              .attr("x2", function(d) { return d.target.x })
-              .attr("y2", function(d) { return d.target.y });
-=======
   // d3.csv('movies.csv', function(csv) {
   //     // Can use rollup function from P2 to total number of times
   //     // an actor's name shows up (this will give us total movies
@@ -201,69 +122,74 @@
   //       }
   //     }
   //          var i = 0;
+//   var actors = {};
+// var i = 0;
+//     d3.csv("movies.csv", function(data) {
+//       //check csv 3 times to get all actors
+//       data.forEach(function(d) {
 
-    var actors = {};
-    d3.csv("movies.csv", function(data) {
-      //check csv 3 times to get all actors
-      data.forEach(function(d) {
+//         if(actors[d.actor_1_name]) {
+//           actors[d.actor_1_name].movies++;
+//           // if (actors[d.actor_1_name].costars[d.actor_3_name]){
 
-        if(actors[d.actor_1_name]) {
-          actors[d.actor_1_name].movies++;
-          // if (actors[d.actor_1_name].costars[d.actor_3_name]){
-
-          // }
-          actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) ? actors[d.actor_1_name].costars[d.actor_3_name]+1 : 1;
-          actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) ? actors[d.actor_1_name].costars[d.actor_2_name]+1 : 1;
-        } else {
-          actors[d.actor_1_name] = {
-          name: d.actor_1_name,
-          likes: d.actor_1_facebook_likes,
-          movies: 1,
-          costars: {}
-        };
-        actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) = 1;
-        actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) = 1;
->>>>>>> be3dc1e8a5f343ec5a44df830c99236413559aa0
-        }
-
-
-        if(actors[d.actor_2_name]) {
-          actors[d.actor_2_name].movies++;
-          actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) ? actors[d.actor_2_name].costars[d.actor_3_name]+1 : 1;
-          actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) ? actors[d.actor_2_name].costars[d.actor_1_name]+1 : 1;
-        } else {
-          actors[d.actor_2_name] = {
-          name: d.actor_2_name,
-          likes: d.actor_2_facebook_likes,
-          movies: 1,
-          costars: {}
-        };
-          actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) = 1;
-          actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) = 1;
-        }
+//           // }
+//           actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) ? actors[d.actor_1_name].costars[d.actor_3_name]+1 : 1;
+//           actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) ? actors[d.actor_1_name].costars[d.actor_2_name]+1 : 1;
+//         } else {
+//           actors[d.actor_1_name] = {
+//           name: d.actor_1_name,
+//           likes: d.actor_1_facebook_likes,
+//           movies: 1,
+//           costars: {}
+//         };
+//         actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) = 1;
+//         actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) = 1;
+//         }
+//         actors[d.actor_1_name].id = i;
+//         i++;
 
 
-        if(actors[d.actor_3_name]){
-          actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) ? actors[d.actor_3_name].costars[d.actor_2_name]+1 : 1;
-          actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) ? actors[d.actor_3_name].costars[d.actor_1_name]+1 : 1;
-         } else { //make a new var
-          actors[d.actor_3_name] = {
-          name: d.actor_3_name,
-          likes: d.actor_3_facebook_likes,
-          movies: 1,
-          costars: {}
-          };
-          actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) = 1;
-          actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) = 1;
-         }
+//         if(actors[d.actor_2_name]) {
+//           actors[d.actor_2_name].movies++;
+//           actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) ? actors[d.actor_2_name].costars[d.actor_3_name]+1 : 1;
+//           actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) ? actors[d.actor_2_name].costars[d.actor_1_name]+1 : 1;
+//         } else {
+//           actors[d.actor_2_name] = {
+//           name: d.actor_2_name,
+//           likes: d.actor_2_facebook_likes,
+//           movies: 1,
+//           costars: {}
+//         };
+//           actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) = 1;
+//           actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) = 1;
+//         }
+//         actors[d.actor_2_name].id = i;
+//         i++;
 
-         
+
+
+//         if(actors[d.actor_3_name]){
+//           actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) ? actors[d.actor_3_name].costars[d.actor_2_name]+1 : 1;
+//           actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) ? actors[d.actor_3_name].costars[d.actor_1_name]+1 : 1;
+//          } else { //make a new var
+//           actors[d.actor_3_name] = {
+//           name: d.actor_3_name,
+//           likes: d.actor_3_facebook_likes,
+//           movies: 1,
+//           costars: {}
+//           };
+//           actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) = 1;
+//           actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) = 1;
+//          }
+//          actors[d.actor_3_name].id = i;
+//         i++;
+
+
 
           
-      });
-        
-    }); 
-    console.log(Object.keys(actors)[1]);
+//       });
+//         console.log(actors);
+//     }); 
 
     
 
@@ -285,8 +211,62 @@
       //   return a;
       // }
       //  });
+var svg = d3.select("#drawArea")
+  .append("svg")
+  .attr("width", 800)
+  .attr("height", 8000);
+
+  var pos = d3.json('nodesmap.json');
+
+  //Drag nodes
+var drag = d3.behavior.drag()
+  .on("dragstart", function() {
+    d3.event.sourceEvent.stopPropagation()
+  })
+  .on("drag", dragmove);
+
+var line = svg.append("line")
+  .style("stroke", "black")
+  .attr("x1", 150)
+  .attr("y1", 100)
+  .attr("x2", 250)
+  .attr("y2", 300);
+
+//First node
+var g1 = svg.append("g")
+.attr("transform", "translate(" + 150 + "," + 100 + ")")
+  .attr("class", "first")
+  .call(drag)
+  .append("circle").attr({
+    r: 20,
+  })
+  .style("fill", "#F00")
+
+//Second node
+var g2 = svg.append("g")
+  .attr("transform", "translate(" + 250 + "," + 300 + ")")
+  .attr("class", "second")
+  .call(drag)
+  .append("circle").attr({
+    r: 20,
+  })
+  .style("fill", "#00F")
+
+//Drag handler
+function dragmove(d) {
+  var x = d3.event.x;
+  var y = d3.event.y;
+  d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
+  if(d3.select(this).attr("class") == "first") {
+    line.attr("x1", x);
+    line.attr("y1", y);
+  } else {
+    line.attr("x2", x);
+    line.attr("y2", y);
+  }
 
 
   </script>
+  <script type="text/javascript" src="main.js"></script>
   </body>
 </html>

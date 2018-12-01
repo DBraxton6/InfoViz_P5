@@ -31,7 +31,7 @@ function buildchart() {
   actors.forEach(d => (results.journalsLookup[d.id] = d));
 
   const svg = d3
-    .select("svg")
+    .select("#drawArea")
     .attr("width", width)
     .attr("height", height + config.titleHeight)
     .html(
