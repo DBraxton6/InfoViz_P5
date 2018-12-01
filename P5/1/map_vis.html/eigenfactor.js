@@ -122,10 +122,10 @@ var i = 0;
 
 
 
-          
+
       });
-        
-    }); 
+
+    });
 
 //YEAR IS NOT IN OUR DATA SET
 //const currentYear = `2005`;
@@ -160,7 +160,7 @@ var i = 0;
     if (vis === "map") {
       //[_links, _nodes, _tree, _nodesmap] = await loadMapRawData();
       //data.nodesmap = _nodesmap;// FIND OUT WHATS IN NODEMAP todo
-    } 
+    }
     //returns e
     data.flowEdges = flowEdges();
 
@@ -168,7 +168,7 @@ var i = 0;
     data.ids = ids(actors);
     data.IDsByName = IDsByName(data.ids);
     //data.tree = tree( data.IDsByName);
-  
+
   d3.select(window).on("resize", redraw);
   redraw();
 });
@@ -215,7 +215,7 @@ function flowEdges() {
 }
 
 function ids(actors) {
-  return 
+  return
     actors.forEach(function(a){
       actors.map(e => {
       return {
@@ -223,7 +223,7 @@ function ids(actors) {
         name: a.name
       };
     });
-  });    
+  });
 }
 
 function IDsByName(ids) {
@@ -233,54 +233,54 @@ function IDsByName(ids) {
   }, new Map());
 }
 
-// function tree( _idsByName) {
-//   const root = [{ path: "_", label: "root", value: 1 }];
-//   const tree = 
-//     actors.forEach( function(d) {
-//       const cell = {
-//         path: d.costars.
-//         label:
-//       };
-//     })
+function tree( _idsByName) {
+  const root = [{ path: "_", label: "root", value: 1 }];
+  const tree =
+    actors.forEach( function(d) {
+      const cell = {
+        path: d.costars.
+        label:
+      };
+    })
 
 
-//   d3
-//     .dsvFormat("\t")
-//     .parseRows(_tree)
-//     .map(e => {
-//       const cell = {
-//         path: e[0],
-//         label: e[2]
-//       };
-//       if (e.length == 4) { //if more vars
-//         cell.longLabel = e[3];
-//         cell.eigenfactor = parseFloat(e[1]);
-//       } else {
-//         cell.parentEigenfactor = parseFloat(e[1]);
-//       }
-//       cell.id = _idsByName.get(cell.label)
-//         ? _idsByName.get(cell.label)
-//         : "p_" + cell.path.split(":").join(",");
-//       cell.parentPath = cell.path
-//         .split(":")
-//         .slice(0, -1)
-//         .join(":");
-//       if (cell.parentPath === "") cell.parentPath = "_";
-//       return cell;
-//     })
-//     .concat(root);
-//   const maxEigenfactor = tree.reduce(
-//     (a, c) => ("eigenfactor" in c && c.eigenfactor > a ? c.eigenfactor : a),
-//     0
-//   );
-//   return tree.map(e => {
-//     if ("eigenfactor" in e) {
-//       e.weight = e.eigenfactor / maxEigenfactor;
-//       e.logWeight = Math.log(1 + e.weight * 10) / Math.log(11);
-//     }
-//     return e;
-//   });
-// }
+  d3
+    .dsvFormat("\t")
+    .parseRows(_tree)
+    .map(e => {
+      const cell = {
+        path: e[0],
+        label: e[2]
+      };
+      if (e.length == 4) { //if more vars
+        cell.longLabel = e[3];
+        cell.eigenfactor = parseFloat(e[1]);
+      } else {
+        cell.parentEigenfactor = parseFloat(e[1]);
+      }
+      cell.id = _idsByName.get(cell.label)
+        ? _idsByName.get(cell.label)
+        : "p_" + cell.path.split(":").join(",");
+      cell.parentPath = cell.path
+        .split(":")
+        .slice(0, -1)
+        .join(":");
+      if (cell.parentPath === "") cell.parentPath = "_";
+      return cell;
+    })
+    .concat(root);
+  const maxEigenfactor = tree.reduce(
+    (a, c) => ("eigenfactor" in c && c.eigenfactor > a ? c.eigenfactor : a),
+    0
+  );
+  return tree.map(e => {
+    if ("eigenfactor" in e) {
+      e.weight = e.eigenfactor / maxEigenfactor;
+      e.logWeight = Math.log(1 + e.weight * 10) / Math.log(11);
+    }
+    return e;
+  });
+}
 
 /*
  * Utilities
