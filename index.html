@@ -2,42 +2,1094 @@
 <html>
   <head>
     <meta charset="UTF-8"/>
-   <script type="text/javascript" src="d3.js"></script>
-    <style>
-    body {
-	  font: 12px sans-serif;
-	}
-  .selected {
-    stroke: red;
-    fill:red;
-  }
-	path.domain {
-		fill: none;
-		stroke-width: 2px;
-		stroke: black;
-	}
-	#wrapper {
-		clear:both;
-	}
-	#p5Map {
-	    float:left;
-	}
-    </style>
-
-    <title>P5 by: Daisha B. & Courtney R.</title>
-   </head>
+    <title>P5 by: Daisha B. / Courtney R.</title>
+  </head>
 
    <body>
-   <div id="wrapper">
+    <svg width="5000" height="5000" font-family="sans-serif" font-size="10" text-anchor="middle"></svg>
+    <script type="text/javascript" src="d3.js"></script>
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+<!--    <div id="wrapper">
 	  <div id="p5Map"></div>
     <div id="drawArea"></div>
-   </div>
+   </div> -->
   <script>
+  // SPACE
+    var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
 
-  //set variables for height and width
-  var width =800;
+  // TITLE
+    svg.append("text")
+    .attr("x", 50)
+    .attr("y", 0 )
+    .attr("dy", "3.5em" )
+    .attr("text-anchor", "start")
+    .style("font-size", "28px")
+    .style("font-weight", "bold")
+    .text("Actors and Their Co-Stars ")
 
-	var height= 800;
+/*  function tooltip(
+  id,
+  w,
+  h,
+  title,
+  text1 = "",
+  text2 = "",
+  value1 = "",
+  value2 = ""
+) {
+  const cursor = d3.mouse(d3.select("svg").node());
+  d3.selectAll(".tooltip").remove();
+  const tooltip = d3
+    .select("g#tooltip")
+    .append("g")
+    .classed("tooltip", true)
+    .attr("id", id);
+
+  const rect = tooltip
+    .append("rect")
+    .classed("background", true)
+    .attr("x", 0)
+    .attr("y", 0)
+    .style("filter", "url(#drop-shadow)");
+
+// two key/values max rn
+  const text = tooltip
+    .append("text")
+    .classed("text", true)
+    .attr("x", 0)
+    .attr("y", 0);
+
+  function appendTspan(t, c, x, dy, text) {
+    if (text !== "")
+      t.append("tspan")
+        .classed(c, true) //if labeled then open box
+        .attr("x", x)
+        .attr("dy", dy)
+        .text(text);
+  }
+
+  appendTspan(text, "title", 5, "1em", title);
+  appendTspan(text, "detail", 5, "1.2em", text1);
+  appendTspan(text, "detail", "4.5em", 0, value1);
+  appendTspan(text, "detail", 5, "1em", text2);
+  appendTspan(text, "detail", "4.5em", 0, value2);
+
+  // Position 
+  const bbox = text.node().getBBox();
+  rect
+    .attr("width", bbox.width + 10)
+    .attr("height", bbox.height + 11)
+    .attr("y", -4);
+
+  // Manage the bottom and right edges 
+  let x = cursor[0];
+  let y = cursor[1] + 26;
+  if (x + bbox.width + 8 + 2 > w) x = x - bbox.width - 10;
+  if (y + bbox.height + 26 + 2 > h) y = y - bbox.height - 10 - 26;
+  tooltip.attr("transform", `translate(${x},${y})`);
+} */
+
+
+  // PLACEMENT OF ALL ACTORS//////////////////////////
+var data = {};
+var pos = [{
+    "x": 126,
+    "y": 83
+    },
+    {
+    "x": 27,
+    "y": 46
+    },
+    {
+    "x": 117,
+    "y": 64
+    },
+    {
+    "x": 70,
+    "y": 138
+    },
+    {
+    "x": 91,
+    "y": 21
+    },
+    {
+    "x": 45,
+    "y": 25
+    },
+    {
+    "x": 9,
+    "y": 140
+    },
+    {
+    "x": 158,
+    "y": 188
+    },
+    {
+    "x": 99,
+    "y": 108
+    },
+    {
+    "x": 169,
+    "y": 164
+    },
+    {
+    "x": 34,
+    "y": 22
+    },
+    {
+    "x": 40,
+    "y": 132
+    },
+    {
+    "x": 32,
+    "y": 30
+    },
+    {
+    "x": 170,
+    "y": 185
+    },
+    {
+    "x": 102,
+    "y": 45
+    },
+    {
+    "x": 122,
+    "y": 126
+    },
+    {
+    "x": 181,
+    "y": 186
+    },
+    {
+    "x": 115,
+    "y": 41
+    },
+    {
+    "x": 173,
+    "y": 188
+    },
+    {
+    "x": 109,
+    "y": 164
+    },
+    {
+    "x": 35,
+    "y": 38
+    },
+    {
+    "x": 186,
+    "y": 27
+    },
+    {
+    "x": 24,
+    "y": 5
+    },
+    {
+    "x": 26,
+    "y": 160
+    },
+    {
+    "x": 33,
+    "y": 78
+    },
+    {
+    "x": 118,
+    "y": 70
+    },
+    {
+    "x": 122,
+    "y": 4
+    },
+    {
+    "x": 43,
+    "y": 73
+    },
+    {
+    "x": 157,
+    "y": 191
+    },
+    {
+    "x": 27,
+    "y": 4
+    },
+    {
+    "x": 153,
+    "y": 6
+    },
+    {
+    "x": 65,
+    "y": 11
+    },
+    {
+    "x": 179,
+    "y": 157
+    },
+    {
+    "x": 47,
+    "y": 160
+    },
+    {
+    "x": 150,
+    "y": 82
+    },
+    {
+    "x": 80,
+    "y": 195
+    },
+    {
+    "x": 23,
+    "y": 180
+    },
+    {
+    "x": 8,
+    "y": 41
+    },
+    {
+    "x": 197,
+    "y": 11
+    },
+    {
+    "x": 131,
+    "y": 111
+    },
+    {
+    "x": 16,
+    "y": 110
+    },
+    {
+    "x": 108,
+    "y": 81
+    },
+    {
+    "x": 34,
+    "y": 180
+    },
+    {
+    "x": 189,
+    "y": 1
+    },
+    {
+    "x": 67,
+    "y": 178
+    },
+    {
+    "x": 83,
+    "y": 26
+    },
+    {
+    "x": 163,
+    "y": 29
+    },
+    {
+    "x": 52,
+    "y": 180
+    },
+    {
+    "x": 60,
+    "y": 78
+    },
+    {
+    "x": 49,
+    "y": 114
+    },
+    {
+    "x": 50,
+    "y": 39
+    },
+    {
+    "x": 23,
+    "y": 32
+    },
+    {
+    "x": 172,
+    "y": 6
+    },
+    {
+    "x": 144,
+    "y": 149
+    },
+    {
+    "x": 10,
+    "y": 22
+    },
+    {
+    "x": 152,
+    "y": 123
+    },
+    {
+    "x": 84,
+    "y": 185
+    },
+    {
+    "x": 21,
+    "y": 176
+    },
+    {
+    "x": 44,
+    "y": 27
+    },
+    {
+    "x": 123,
+    "y": 198
+    },
+    {
+    "x": 79,
+    "y": 166
+    },
+    {
+    "x": 198,
+    "y": 96
+    },
+    {
+    "x": 118,
+    "y": 112
+    },
+    {
+    "x": 163,
+    "y": 163
+    },
+    {
+    "x": 92,
+    "y": 186
+    },
+    {
+    "x": 59,
+    "y": 54
+    },
+    {
+    "x": 84,
+    "y": 100
+    },
+    {
+    "x": 52,
+    "y": 171
+    },
+    {
+    "x": 19,
+    "y": 125
+    },
+    {
+    "x": 38,
+    "y": 72
+    },
+    {
+    "x": 193,
+    "y": 42
+    },
+    {
+    "x": 28,
+    "y": 27
+    },
+    {
+    "x": 146,
+    "y": 22
+    },
+    {
+    "x": 174,
+    "y": 126
+    },
+    {
+    "x": 118,
+    "y": 100
+    },
+    {
+    "x": 1,
+    "y": 50
+    },
+    {
+    "x": 126,
+    "y": 71
+    },
+    {
+    "x": 159,
+    "y": 31
+    },
+    {
+    "x": 147,
+    "y": 146
+    },
+    {
+    "x": 124,
+    "y": 120
+    },
+    {
+    "x": 177,
+    "y": 128
+    },
+    {
+    "x": 0,
+    "y": 49
+    },
+    {
+    "x": 198,
+    "y": 77
+    },
+    {
+    "x": 109,
+    "y": 63
+    },
+    {
+    "x": 23,
+    "y": 44
+    },
+    {
+    "x": 90,
+    "y": 159
+    },
+    {
+    "x": 18,
+    "y": 94
+    },
+    {
+    "x": 59,
+    "y": 182
+    },
+    {
+    "x": 40,
+    "y": 37
+    },
+    {
+    "x": 175,
+    "y": 32
+    },
+    {
+    "x": 67,
+    "y": 138
+    },
+    {
+    "x": 80,
+    "y": 9
+    },
+    {
+    "x": 39,
+    "y": 114
+    },
+    {
+    "x": 198,
+    "y": 85
+    },
+    {
+    "x": 144,
+    "y": 160
+    },
+    {
+    "x": 80,
+    "y": 177
+    },
+    {
+    "x": 93,
+    "y": 125
+    },
+    {
+    "x": 40,
+    "y": 17
+    },
+    {
+    "x": 18,
+    "y": 60
+    },
+    {
+    "x": 38,
+    "y": 82
+    },
+    {
+    "x": 5,
+    "y": 176
+    },
+    {
+    "x": 71,
+    "y": 91
+    },
+    {
+    "x": 175,
+    "y": 87
+    },
+    {
+    "x": 117,
+    "y": 46
+    },
+    {
+    "x": 109,
+    "y": 153
+    },
+    {
+    "x": 1,
+    "y": 69
+    },
+    {
+    "x": 59,
+    "y": 156
+    },
+    {
+    "x": 87,
+    "y": 118
+    },
+    {
+    "x": 7,
+    "y": 176
+    },
+    {
+    "x": 29,
+    "y": 39
+    },
+    {
+    "x": 154,
+    "y": 54
+    },
+    {
+    "x": 167,
+    "y": 166
+    },
+    {
+    "x": 144,
+    "y": 93
+    },
+    {
+    "x": 62,
+    "y": 132
+    },
+    {
+    "x": 96,
+    "y": 122
+    },
+    {
+    "x": 162,
+    "y": 63
+    },
+    {
+    "x": 6,
+    "y": 61
+    },
+    {
+    "x": 31,
+    "y": 173
+    },
+    {
+    "x": 20,
+    "y": 75
+    },
+    {
+    "x": 36,
+    "y": 154
+    },
+    {
+    "x": 126,
+    "y": 133
+    },
+    {
+    "x": 41,
+    "y": 184
+    },
+    {
+    "x": 188,
+    "y": 27
+    },
+    {
+    "x": 80,
+    "y": 62
+    },
+    {
+    "x": 181,
+    "y": 26
+    },
+    {
+    "x": 155,
+    "y": 22
+    },
+    {
+    "x": 119,
+    "y": 83
+    },
+    {
+    "x": 42,
+    "y": 196
+    },
+    {
+    "x": 127,
+    "y": 112
+    },
+    {
+    "x": 81,
+    "y": 116
+    },
+    {
+    "x": 167,
+    "y": 163
+    },
+    {
+    "x": 75,
+    "y": 143
+    },
+    {
+    "x": 96,
+    "y": 167
+    },
+    {
+    "x": 70,
+    "y": 17
+    },
+    {
+    "x": 105,
+    "y": 97
+    },
+    {
+    "x": 20,
+    "y": 40
+    },
+    {
+    "x": 102,
+    "y": 64
+    },
+    {
+    "x": 135,
+    "y": 138
+    },
+    {
+    "x": 173,
+    "y": 199
+    },
+    {
+    "x": 127,
+    "y": 109
+    },
+    {
+    "x": 29,
+    "y": 84
+    },
+    {
+    "x": 190,
+    "y": 98
+    },
+    {
+    "x": 197,
+    "y": 105
+    },
+    {
+    "x": 194,
+    "y": 7
+    },
+    {
+    "x": 96,
+    "y": 152
+    },
+    {
+    "x": 73,
+    "y": 89
+    },
+    {
+    "x": 102,
+    "y": 74
+    },
+    {
+    "x": 65,
+    "y": 69
+    },
+    {
+    "x": 111,
+    "y": 35
+    },
+    {
+    "x": 177,
+    "y": 11
+    },
+    {
+    "x": 48,
+    "y": 26
+    },
+    {
+    "x": 21,
+    "y": 78
+    },
+    {
+    "x": 83,
+    "y": 90
+    },
+    {
+    "x": 64,
+    "y": 158
+    },
+    {
+    "x": 98,
+    "y": 63
+    },
+    {
+    "x": 141,
+    "y": 105
+    },
+    {
+    "x": 163,
+    "y": 73
+    },
+    {
+    "x": 87,
+    "y": 94
+    },
+    {
+    "x": 129,
+    "y": 123
+    },
+    {
+    "x": 42,
+    "y": 170
+    },
+    {
+    "x": 10,
+    "y": 108
+    },
+    {
+    "x": 103,
+    "y": 38
+    },
+    {
+    "x": 21,
+    "y": 140
+    },
+    {
+    "x": 182,
+    "y": 173
+    },
+    {
+    "x": 121,
+    "y": 185
+    },
+    {
+    "x": 6,
+    "y": 83
+    },
+    {
+    "x": 132,
+    "y": 56
+    },
+    {
+    "x": 165,
+    "y": 147
+    },
+    {
+    "x": 87,
+    "y": 27
+    },
+    {
+    "x": 29,
+    "y": 1
+    },
+    {
+    "x": 44,
+    "y": 3
+    },
+    {
+    "x": 115,
+    "y": 106
+    },
+    {
+    "x": 132,
+    "y": 6
+    },
+    {
+    "x": 95,
+    "y": 181
+    },
+    {
+    "x": 178,
+    "y": 105
+    },
+    {
+    "x": 190,
+    "y": 127
+    },
+    {
+    "x": 71,
+    "y": 147
+    },
+    {
+    "x": 65,
+    "y": 9
+    },
+    {
+    "x": 60,
+    "y": 20
+    },
+    {
+    "x": 132,
+    "y": 1
+    },
+    {
+    "x": 24,
+    "y": 182
+    },
+    {
+    "x": 49,
+    "y": 44
+    },
+    {
+    "x": 61,
+    "y": 34
+    },
+    {
+    "x": 50,
+    "y": 51
+    },
+    {
+    "x": 124,
+    "y": 50
+    },
+    {
+    "x": 146,
+    "y": 0
+    },
+    {
+    "x": 148,
+    "y": 7
+    },
+    {
+    "x": 81,
+    "y": 93
+    },
+    {
+    "x": 72,
+    "y": 157
+    },
+    {
+    "x": 102,
+    "y": 193
+    },
+    {
+    "x": 174,
+    "y": 144
+    },
+    {
+    "x": 58,
+    "y": 115
+    },
+    {
+    "x": 130,
+    "y": 180
+    },
+    {
+    "x": 9,
+    "y": 130
+    },
+    {
+    "x": 129,
+    "y": 69
+    },
+    {
+    "x": 124,
+    "y": 14
+    },
+    {
+    "x": 97,
+    "y": 172
+    },
+    {
+    "x": 94,
+    "y": 129
+    },
+    {
+    "x": 98,
+    "y": 177
+    },
+    {
+    "x": 8,
+    "y": 113
+    }];
+const actors = {};
+var keys = [];
+  //PARSING POS/////////////////////////////////
+  // d3.json("nodesmap.json", function(err, d) {
+  //   if(err) {
+  //     throw err;
+  //   } else {
+  //     console.log(d);
+  //     pos = d;
+  //   }
+    
+  // });
+
+  //PARSING ACTORS////////////////
+  var i = 0;
+  var count = 0;
+    d3.csv("movies.csv", function(data) {
+      //check csv 3 times to get all actors
+      data.forEach(function(d) {
+
+        if(actors[d.actor_1_name] != null) {
+          actors[d.actor_1_name].movies++;
+          //actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) ? actors[d.actor_1_name].costars[d.actor_3_name]+1 : 1;
+          actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) ? actors[d.actor_1_name].costars[d.actor_2_name]+1 : 1;
+        } else {
+          count++;
+          actors[d.actor_1_name] = {
+          name: d.actor_1_name,
+          likes: d.actor_1_facebook_likes,
+          movies: 1,
+          costars: {},
+          //x: pos[i].x,
+          //y: pos[i].y
+        };
+        actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) = 1;
+        actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) = 1;
+        actors[d.actor_1_name].id = i;
+        keys[i] = d.actor_1_name;
+        i++;
+        }
+        
+        if(actors[d.actor_2_name]!= null) {
+          actors[d.actor_2_name].movies++;
+          //actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) ? actors[d.actor_2_name].costars[d.actor_3_name]+1 : 1;
+          actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) ? actors[d.actor_2_name].costars[d.actor_1_name]+1 : 1;
+        } else {
+          count++;
+          actors[d.actor_2_name] = {
+          name: d.actor_2_name,
+          likes: d.actor_2_facebook_likes,
+          movies: 1,
+          //x: pos[i].x,
+          //y: pos[i].y,
+          costars: {}
+        };
+          //actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) = 1;
+          actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) = 1;
+        actors[d.actor_2_name].id = i;
+        keys[i] = d.actor_3_name;
+        
+        }
+        
+        if(actors[d.actor_3_name] != null){
+          actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) ? actors[d.actor_3_name].costars[d.actor_2_name]+1 : 1;
+          actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) ? actors[d.actor_3_name].costars[d.actor_1_name]+1 : 1;
+         } else { 
+          count++;
+          actors[d.actor_3_name] = {
+          name: d.actor_3_name,
+          likes: d.actor_3_facebook_likes,
+          movies: 1,
+          //x: pos[i].x,
+          //y: pos[i].y,
+          costars: {}
+          };
+          actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) = 1;
+          actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) = 1;
+         actors[d.actor_3_name].id = i;
+         keys[i] = d.actor_3_name;
+         
+         }
+         
+      });
+      
+
+    var s = 0;
+    for (key in actors) {
+        if (actors.hasOwnProperty(key)) s++;
+    }
+
+      for(var k = 0; k < keys.length; k++) {
+        circGen(actors[keys[k]]);
+      }
+      console.log(s);
+    }); 
+
+
+  ///CIRCLE GENERATOR/////////////////
+  function circGen(actor) {
+    var col = colByMov(actor.movies);
+    var siz = sizeByLikes(actor.likes);
+    var circ = svg.append("g")
+      .attr("transform", "translate(" + actor.x + "," + actor.y + ")")
+      .attr("class", "first")
+      .call(drag)
+      .append("circle").attr({
+        r: siz,
+      })
+      .style("fill", col);
+  }
+
+  ///HELPER FUNCTIONS////////
+  function sizeByLikes(likes) {
+    var size = 3;
+    if(likes == 0) {
+      size = 5;
+    }
+    if(0 < likes <= 6000) {
+      size = 6;
+    }
+    if(likes > 6000) { //can be bigger with this math
+      size = likes/1000;
+    }
+    if(100000 < likes) {
+      size = 100;
+    }
+    return size;
+  }
+
+  function colByMov(mov) {
+    var col;
+    if(mov <= 1) {
+      col = "#db2872"; //purp
+    }
+    if(1 < mov <= 3) {
+      col = "#b5c92d"; //green
+    }
+    if(3 < mov <= 7) {
+      col = "#3e9ad6"; //blue
+    }
+    else {
+      col = "#e45c1e"; //orange
+    }
+    return col;
+  }
+
+
+  //Drag nodes/////////////////////
+var drag = d3.behavior.drag()
+  .on("dragstart", function() {
+    d3.event.sourceEvent.stopPropagation()
+  })
+  .on("drag", dragmove);
+
+var line = svg.append("line")
+  .style("stroke", "black")
+  .attr("x1", 150)
+  .attr("y1", 100)
+  .attr("x2", 250)
+  .attr("y2", 300);
+
+//First node
+// var g1 = svg.append("g")
+// .attr("transform", "translate(" + 150 + "," + 100 + ")")
+//   .attr("class", "first")
+//   .call(drag)
+//   .append("circle").attr({
+//     r: 20,
+//   })
+//   .style("fill", "#F00")
+
+//Second node
+var g2 = svg.append("g")
+  .attr("transform", "translate(" + 250 + "," + 300 + ")")
+  .attr("class", "second")
+  .call(drag)
+  .append("circle").attr({
+    r: 20,
+  })
+  .style("fill", "#00F");
+
+//Drag handler
+function dragmove(d) {
+  var x = d3.event.x;
+  var y = d3.event.y;
+  d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
+  if(d3.select(this).attr("class") == "first") {
+    line.attr("x1", x);
+    line.attr("y1", y);
+  } else {
+    line.attr("x2", x);
+    line.attr("y2", y);
+  };
+};
+
+
 
   // D3 to grab all the data needed from "movies.csv"
   // d3.csv('movies.csv', function(csv) {
@@ -121,75 +1173,74 @@
   //             .attr("y2", function(d) { return d.target.y });
   //       }
   //     }
-  //          var i = 0;
-//   var actors = {};
-// var i = 0;
-//     d3.csv("movies.csv", function(data) {
-//       //check csv 3 times to get all actors
-//       data.forEach(function(d) {
-
-//         if(actors[d.actor_1_name]) {
-//           actors[d.actor_1_name].movies++;
-//           // if (actors[d.actor_1_name].costars[d.actor_3_name]){
-
-//           // }
-//           actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) ? actors[d.actor_1_name].costars[d.actor_3_name]+1 : 1;
-//           actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) ? actors[d.actor_1_name].costars[d.actor_2_name]+1 : 1;
-//         } else {
-//           actors[d.actor_1_name] = {
-//           name: d.actor_1_name,
-//           likes: d.actor_1_facebook_likes,
-//           movies: 1,
-//           costars: {}
-//         };
-//         actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) = 1;
-//         actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) = 1;
-//         }
-//         actors[d.actor_1_name].id = i;
-//         i++;
 
 
-//         if(actors[d.actor_2_name]) {
-//           actors[d.actor_2_name].movies++;
-//           actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) ? actors[d.actor_2_name].costars[d.actor_3_name]+1 : 1;
-//           actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) ? actors[d.actor_2_name].costars[d.actor_1_name]+1 : 1;
-//         } else {
-//           actors[d.actor_2_name] = {
-//           name: d.actor_2_name,
-//           likes: d.actor_2_facebook_likes,
-//           movies: 1,
-//           costars: {}
-//         };
-//           actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) = 1;
-//           actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) = 1;
-//         }
-//         actors[d.actor_2_name].id = i;
-//         i++;
+  // //PARSING DATA////////////////
+  // var actors = {};
+  // var i = 0;
+  //   d3.csv("movies.csv", function(data) {
+  //     //check csv 3 times to get all actors
+  //     data.forEach(function(d) {
+
+  //       if(actors[d.actor_1_name]) {
+  //         actors[d.actor_1_name].movies++;
+  //         // if (actors[d.actor_1_name].costars[d.actor_3_name]){
+
+  //         // }
+  //         actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) ? actors[d.actor_1_name].costars[d.actor_3_name]+1 : 1;
+  //         actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) ? actors[d.actor_1_name].costars[d.actor_2_name]+1 : 1;
+  //       } else {
+  //         actors[d.actor_1_name] = {
+  //         name: d.actor_1_name,
+  //         likes: d.actor_1_facebook_likes,
+  //         movies: 1,
+  //         costars: {}
+  //       };
+  //       actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) = 1;
+  //       actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) = 1;
+  //       }
+  //       actors[d.actor_1_name].id = i;
+  //       i++;
 
 
-
-//         if(actors[d.actor_3_name]){
-//           actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) ? actors[d.actor_3_name].costars[d.actor_2_name]+1 : 1;
-//           actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) ? actors[d.actor_3_name].costars[d.actor_1_name]+1 : 1;
-//          } else { //make a new var
-//           actors[d.actor_3_name] = {
-//           name: d.actor_3_name,
-//           likes: d.actor_3_facebook_likes,
-//           movies: 1,
-//           costars: {}
-//           };
-//           actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) = 1;
-//           actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) = 1;
-//          }
-//          actors[d.actor_3_name].id = i;
-//         i++;
+  //       if(actors[d.actor_2_name]) {
+  //         actors[d.actor_2_name].movies++;
+  //         actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) ? actors[d.actor_2_name].costars[d.actor_3_name]+1 : 1;
+  //         actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) ? actors[d.actor_2_name].costars[d.actor_1_name]+1 : 1;
+  //       } else {
+  //         actors[d.actor_2_name] = {
+  //         name: d.actor_2_name,
+  //         likes: d.actor_2_facebook_likes,
+  //         movies: 1,
+  //         costars: {}
+  //       };
+  //         actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) = 1;
+  //         actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) = 1;
+  //       }
+  //       actors[d.actor_2_name].id = i;
+  //       i++;
 
 
 
-          
-//       });
-//         console.log(actors);
-//     }); 
+  //       if(actors[d.actor_3_name]){
+  //         actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) ? actors[d.actor_3_name].costars[d.actor_2_name]+1 : 1;
+  //         actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) ? actors[d.actor_3_name].costars[d.actor_1_name]+1 : 1;
+  //        } else { //make a new var
+  //         actors[d.actor_3_name] = {
+  //         name: d.actor_3_name,
+  //         likes: d.actor_3_facebook_likes,
+  //         movies: 1,
+  //         costars: {}
+  //         };
+  //         actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) = 1;
+  //         actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) = 1;
+  //        }
+  //        actors[d.actor_3_name].id = i;
+  //       i++;
+     
+  //     });
+  //       console.log(actors);
+  //   }); 
 
     
 
@@ -211,59 +1262,7 @@
       //   return a;
       // }
       //  });
-var svg = d3.select("#drawArea")
-  .append("svg")
-  .attr("width", 800)
-  .attr("height", 8000);
 
-  var pos = d3.json('nodesmap.json');
-
-  //Drag nodes
-var drag = d3.behavior.drag()
-  .on("dragstart", function() {
-    d3.event.sourceEvent.stopPropagation()
-  })
-  .on("drag", dragmove);
-
-var line = svg.append("line")
-  .style("stroke", "black")
-  .attr("x1", 150)
-  .attr("y1", 100)
-  .attr("x2", 250)
-  .attr("y2", 300);
-
-//First node
-var g1 = svg.append("g")
-.attr("transform", "translate(" + 150 + "," + 100 + ")")
-  .attr("class", "first")
-  .call(drag)
-  .append("circle").attr({
-    r: 20,
-  })
-  .style("fill", "#F00")
-
-//Second node
-var g2 = svg.append("g")
-  .attr("transform", "translate(" + 250 + "," + 300 + ")")
-  .attr("class", "second")
-  .call(drag)
-  .append("circle").attr({
-    r: 20,
-  })
-  .style("fill", "#00F")
-
-//Drag handler
-function dragmove(d) {
-  var x = d3.event.x;
-  var y = d3.event.y;
-  d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
-  if(d3.select(this).attr("class") == "first") {
-    line.attr("x1", x);
-    line.attr("y1", y);
-  } else {
-    line.attr("x2", x);
-    line.attr("y2", y);
-  }
 
 
   </script>

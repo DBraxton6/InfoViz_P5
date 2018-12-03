@@ -26,7 +26,7 @@ svg {
 <script>
 var actors = {};
 
-
+var data = {};
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
@@ -38,8 +38,8 @@ var div = d3.select("body").append("div")
 
 
   svg.append("text")
-    .attr("x", 500)
-    .attr("y", 15 )
+    .attr("x", 100)
+    .attr("y", 5 )
     .attr("dy", "3.5em" )
     .attr("text-anchor", "start")
     .style("font-size", "28px")
@@ -55,8 +55,12 @@ var movies = d3.csv("movies.csv", function(d) {
   d.name = d["actor_1_name"];
 
  	return d;
-}, function(error, data) {
+}, function(error, da) {
   if (error) throw error;
+  data = da;
+ 
+});
+ 
 
   //THERE IS A WAY TO NEST/ROLLUP STRINGS
   //this link has examples : http://learnjsdata.com/group_data.html
@@ -67,14 +71,18 @@ var movies = d3.csv("movies.csv", function(d) {
   // .rollup(function(v) { return v.length; })
   // .entries(movies);
 
+//right now it's random??
   var color = d3.scaleOrdinal()
   .domain(data.map(function(d){ return d.name;}))
   .range(['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6',
   '#ffe9a8','#b9bfe3','#fddaec','#cccccc']);
 
+
   var root = d3.hierarchy({children: data})
       .sum(function(d) { return d.value; })
 
+
+//draggable??
   var node = svg.selectAll(".node")
     .data(pack(root).leaves())
     .enter().append("g")
@@ -82,6 +90,7 @@ var movies = d3.csv("movies.csv", function(d) {
       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
 
+//are you still pulling from my old code?
   node.append("circle")
       .attr("id", function(d) { return d.id; })
       .attr("r", function(d) { return d.r; })
@@ -92,6 +101,7 @@ var movies = d3.csv("movies.csv", function(d) {
       .style("opacity", .9);
 
       var duration = 300;
+  
   data.forEach(function(d, i) {
   //  console.log(d.value);
     node.transition().duration(duration).delay(i * duration)
@@ -108,7 +118,7 @@ var movies = d3.csv("movies.csv", function(d) {
       .duration(500)
       .style("opacity", 0);
   });
-
+ 
   //
   // var legend = svg.selectAll(".legend")
   // .data(data).enter()
@@ -142,7 +152,5 @@ var movies = d3.csv("movies.csv", function(d) {
   // 	.attr("font-size", "17px");
 
 
-
-});
 
 </script>
