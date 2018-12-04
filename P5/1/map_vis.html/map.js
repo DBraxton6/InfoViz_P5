@@ -218,6 +218,7 @@ function updatePositions(transition) {
 
   change.attr("transform", (d, i, e) => { //lol
     let pos = results.nodesmap[d.id].slice();
+    console.log(pos);
 
     let diffX = pos[0] - lens.x,
       diffY = pos[1] - lens.y,
