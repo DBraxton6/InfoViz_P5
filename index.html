@@ -20,7 +20,9 @@
 
     </style>
   </head>
+
   <style type="text/css">
+
   body{background: #f0f0f0;}
   #lens {
   fill: white;
@@ -122,8 +124,8 @@
 } */
 
 
-    .style("font-family","Montserrat")
-    .text("Actors and Their Co-Stars")
+    // .style("font-family","Montserrat")
+    // .text("Actors and Their Co-Stars")
 
     // ///LENS///////////////
     // const lens = {
@@ -152,17 +154,6 @@ var posY = [789, 636, 656, 121, 229, 429, 649, 107, 650, 795, 247, 151, 507, 668
 
 const actors = {};
 var keys = [];
-
-  //PARSING POS/////////////////////////////////
-  // d3.json("nodesmap.json", function(err, d) {
-  //   if(err) {
-  //     throw err;
-  //   } else {
-  //     console.log(d);
-  //     pos = d;
-  //   }
-
-  // });
 
 
 
@@ -248,22 +239,12 @@ var keys = [];
 
       });
 
-
-
-        }
-
-      });
-
-
       for(var k = 0; k < keys.length; k++) {
         circGen(actors[keys[k]]);
       }
-
-      //console.log(actor);
     });
-var clicked = false;
 
-    });
+
 
 
   ///CIRCLE GENERATOR/////////////////
@@ -289,8 +270,6 @@ var clicked = false;
         }
       })
       .style("fill", col)
-
-      //.style("border", "gray");
 
       .on("mouseover", function(data) {
         div.transition()
@@ -333,7 +312,6 @@ var clicked = false;
         .duration(500)
         .style("opacity", 0);
       });
-
 
   }
 
@@ -410,16 +388,13 @@ var clicked = false;
       .attr("y2", p2.y)
       .style("stroke-width", p1.costars[p2.name]);
     } else {
-
-      d3.select("line").remove();
-
       p1.clicked = -1;
       d3.select("line").remove();
-
    }
 
   }
 
+      d3.select("line").remove();
 
 //   //ADD LENS TO ZOOM FOR INFO/////////////////
 
@@ -553,197 +528,36 @@ var clicked = false;
 //   })
 //   .style("fill", "#00F");
 
-
-//Drag handler
-function dragmove(d) {
-  var x = d3.event.x;
-  var y = d3.event.y;
-  d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
-  if(d3.select(this).attr("class") == "first") {
-    line.attr("x1", x);
-    line.attr("y1", y);
-  } else {
-    line.attr("x2", x);
-    line.attr("y2", y);
-  };
-};
+var legend = svg.selectAll(".legend")
+ .data(data).enter()
+ .append("g")
+ .attr("class","legend")
+ .attr("transform", "translate(" + 1000 + "," + 60 + ")");
 
 
-
-  // D3 to grab all the data needed from "movies.csv"
-  // d3.csv('movies.csv', function(csv) {
-  //     // Can use rollup function from P2 to total number of times
-  //     // an actor's name shows up (this will give us total movies
-  //     // they are in according to the dataset)
-  //     for (var i=0; i<csv.length; ++i) {
-		// 	csv[i].actor_1_name = csv[i].actor_1_name;
-		// 	csv[i].actor_2_name = csv[i].actor_2_name;
-  //     csv[i].actor_3_name = csv[i].actor_3_name;
-  //     csv[i].movie_title = csv[i].movie_title;
-
-  //     //only need facebook likes for 1 actor (I think) for circle/
-  //     // diamter display
-  //     csv[i].actor_1_facebook_likes = Number(csv[i].actor_1_facebook_likes);
-  //     csv[i].gross = Number(csv[i].gross);
-	 //    }
+  legend.append("rect")
+    .attr("x", 1000)
+    .attr("y", 100)
+    .attr("width", 15)
+    .attr("height", 15)
+   .style("fill", "#3e9ad6");
 
 
-
-  //     console.log(csv); /*<--used to test that data was entered correctly
-  //                           and that strings converted to integers */
-
-  //     var width = 960, height = 900, colors = d3.scale.category10();
-
-  //     var n = 1605, // number of nodes
-  //         m = 1607, // number of links
-  //         charge = -1000;
-
-  //     var svg = d3.select("body").append("svg")
-  //         .attr("width", width)
-  //         .attr("height", height)
-  //         .on("mousedown", create);
-
-  //     create();
-
-  //     function create () {
-  //       svg.selectAll(".link, .node").remove();
-  //       randomGraph(n, m, charge);
-  //     }
-
-  //     function randomGraph (n, m, charge) { //creates a random graph on n nodes and m links
-  //       var nodes = d3.range(n).map(Object),
-  //           list  = randomChoose(unorderedPairs(d3.range(n)), m),
-  //           links = list.map(function (a) { return {source: a[0], target: a[1]} });
-
-  //       var force = d3.layout.force()
-  //           .size([width, height])
-  //           .nodes(nodes)
-  //           .links(links)
-  //           .charge(charge)
-  //           .on("tick", tick)
-  //           .start();
-
-  //       var svgLinks = svg.selectAll(".link").data(links)
-  //         .enter().append("line")
-  //           .attr("class", "link");
-
-  //       var svgNodes = svg.selectAll(".node").data(nodes)
-  //         .enter().append("circle")
-  //           .attr("class", "node")
-  //           .attr("r", 3)
-  //           .style("fill", "white");
-
-  //       svgNodes.transition().duration(800)
-  //           .attr("r", function (d) { return 3 + 3 * d.weight })
-  //           .style("fill", function (d) { return colors(d.weight) });
-
-  //       svgLinks.transition().duration(300)
-  //           .style("stroke-width", 3);
-
-  //       function tick () {
-  //         svgNodes
-  //             .attr("cx", function(d) { return d.x })
-  //             .attr("cy", function(d) { return d.y });
-
-  //         svgLinks
-  //             .attr("x1", function(d) { return d.source.x })
-  //             .attr("y1", function(d) { return d.source.y })
-  //             .attr("x2", function(d) { return d.target.x })
-  //             .attr("y2", function(d) { return d.target.y });
-  //       }
-  //     }
+   legend.append("text")
+    .attr("x", 1000)
+     .attr("text-anchor", "start")
+    .attr("dy", "1em")
+    .attr("y", 100)
+    .text("> 3 Movies")
+   .attr("font-size", "12px");
 
 
-  // //PARSING DATA////////////////
-  // var actors = {};
-  // var i = 0;
-  //   d3.csv("movies.csv", function(data) {
-  //     //check csv 3 times to get all actors
-  //     data.forEach(function(d) {
-
-  //       if(actors[d.actor_1_name]) {
-  //         actors[d.actor_1_name].movies++;
-  //         // if (actors[d.actor_1_name].costars[d.actor_3_name]){
-
-  //         // }
-  //         actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) ? actors[d.actor_1_name].costars[d.actor_3_name]+1 : 1;
-  //         actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) ? actors[d.actor_1_name].costars[d.actor_2_name]+1 : 1;
-  //       } else {
-  //         actors[d.actor_1_name] = {
-  //         name: d.actor_1_name,
-  //         likes: d.actor_1_facebook_likes,
-  //         movies: 1,
-  //         costars: {}
-  //       };
-  //       actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) = 1;
-  //       actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) = 1;
-  //       }
-  //       actors[d.actor_1_name].id = i;
-  //       i++;
-
-
-  //       if(actors[d.actor_2_name]) {
-  //         actors[d.actor_2_name].movies++;
-  //         actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) ? actors[d.actor_2_name].costars[d.actor_3_name]+1 : 1;
-  //         actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) ? actors[d.actor_2_name].costars[d.actor_1_name]+1 : 1;
-  //       } else {
-  //         actors[d.actor_2_name] = {
-  //         name: d.actor_2_name,
-  //         likes: d.actor_2_facebook_likes,
-  //         movies: 1,
-  //         costars: {}
-  //       };
-  //         actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) = 1;
-  //         actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) = 1;
-  //       }
-  //       actors[d.actor_2_name].id = i;
-  //       i++;
-
-
-
-  //       if(actors[d.actor_3_name]){
-  //         actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) ? actors[d.actor_3_name].costars[d.actor_2_name]+1 : 1;
-  //         actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) ? actors[d.actor_3_name].costars[d.actor_1_name]+1 : 1;
-  //        } else { //make a new var
-  //         actors[d.actor_3_name] = {
-  //         name: d.actor_3_name,
-  //         likes: d.actor_3_facebook_likes,
-  //         movies: 1,
-  //         costars: {}
-  //         };
-  //         actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) = 1;
-  //         actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) = 1;
-  //        }
-  //        actors[d.actor_3_name].id = i;
-  //       i++;
-
-  //     });
-  //       console.log(actors);
-  //   });
-
-
-
-      // function randomChoose (s, k) { // returns a random k element subset of s
-      //   var a = [], i = -1, j;
-      //   while (++i < k) {
-      //     j = Math.floor(Math.random() * s.length);
-      //     a.push(s.splice(j, 1)[0]);
-      //   };
-      //   return a;
-      // }
-
-      // function unorderedPairs (s) { // returns the list of all unordered pairs from s
-      //   var i = -1, a = [], j;
-      //   while (++i < s.length) {
-      //     j = i;
-      //     while (++j < s.length) a.push([s[i],s[j]])
-      //   };
-      //   return a;
-      // }
-      //  });
-
-
-
+   legend.append("text")
+    .attr("x",31)
+    .attr("dy", "-.2em")
+    .attr("y",-10)
+    .text("Movie Range")
+   .attr("font-size", "17px");
 
 
   </script>

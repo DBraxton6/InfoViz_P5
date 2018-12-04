@@ -1,18 +1,9 @@
-
- 
-
-
-
-
-
-
-
-  <style type="text/css"> 
+<style type="text/css"> 
   body{background: #f0f0f0;}
   #lens {
   fill: white;
   stroke: #666;
-  stroke-width: 1px; } 
+  stroke-width: 1px; }
   g.leaf.labeled text { opacity: 1; }
   g.leaf.clicked circle { fill: #222222; }
   </style>
@@ -92,7 +83,7 @@ var keys = [];
         keys[i] = d.actor_1_name;
         i++;
         }
-        
+
         if(actors[d.actor_2_name]!= null) {
           actors[d.actor_2_name].movies += 1;
           actors[d.actor_2_name].costarNames.push(d.actor_3_name, d.actor_1_name);
@@ -115,13 +106,13 @@ var keys = [];
         keys[i] = d.actor_3_name;
         i++;
         }
-        
+
         if(actors[d.actor_3_name] != null){
           actors[d.actor_3_name].movies += 1;
           actors[d.actor_3_name].costarNames.push(d.actor_2_name, d.actor_1_name);
           actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) ? actors[d.actor_3_name].costars[d.actor_2_name]+1 : 1;
           actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) ? actors[d.actor_3_name].costars[d.actor_1_name]+1 : 1;
-         } else { 
+         } else {
           count++;
           actors[d.actor_3_name] = {
           name: d.actor_3_name,
@@ -138,14 +129,14 @@ var keys = [];
          keys[i] = d.actor_3_name;
          i++;
          }
-        } 
-         
+        }
+
       });
 
       for(var k = 0; k < keys.length; k++) {
         circGen(actors[keys[k]]);
       }
-    }); 
+    });
 
   ///CIRCLE GENERATOR/////////////////
   var clicked = false;
@@ -163,7 +154,7 @@ var keys = [];
       //.on("mouseout", handleMouseOut)
       .on("click", function() {
         clicked = !clicked;
-        
+
         for (var i = 0; i < actor.costarNames.length; i++) {
           console.log(actors[actor.costarNames[i]]);
           makeLine(actor, actors[actor.costarNames[i]], clicked);
@@ -246,7 +237,7 @@ var keys = [];
       .style("stroke-width", p1.costars[p2.name]);
     } else {
       p1.clicked = -1;
-      d3.select("line").remove(); 
+      d3.select("line").remove();
    }
 
   }
