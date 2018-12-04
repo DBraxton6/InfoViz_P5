@@ -4,13 +4,22 @@
     <meta charset="UTF-8"/>
     <title>P5 by: Daisha B. / Courtney R.</title>
   </head>
+  <style type="text/css"> 
+  body{background: #f0f0f0;}
+  #lens {
+  fill: white;
+  stroke: #666;
+  stroke-width: 1px; } 
+  g.leaf.labeled text { opacity: 1; }
+  g.leaf.clicked circle { fill: #222222; }
+  </style>
 
    <body>
-    <svg width="5000" height="5000" font-family="sans-serif" font-size="10" text-anchor="middle"></svg>
+    <svg width="2000" height="2000" font-family="Montserrat" font-size="10" text-anchor="middle"></svg>
     <script type="text/javascript" src="d3.js"></script>
     <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
 <!--    <div id="wrapper">
-	  <div id="p5Map"></div>
+    <div id="p5Map"></div>
     <div id="drawArea"></div>
    </div> -->
   <script>
@@ -27,70 +36,28 @@
     .attr("text-anchor", "start")
     .style("font-size", "28px")
     .style("font-weight", "bold")
-    .text("Actors and Their Co-Stars ")
+    .style("font-family","Montserrat")
+    .text("Actors and Their Co-Stars")
 
-/*  function tooltip(
-  id,
-  w,
-  h,
-  title,
-  text1 = "",
-  text2 = "",
-  value1 = "",
-  value2 = ""
-) {
-  const cursor = d3.mouse(d3.select("svg").node());
-  d3.selectAll(".tooltip").remove();
-  const tooltip = d3
-    .select("g#tooltip")
-    .append("g")
-    .classed("tooltip", true)
-    .attr("id", id);
+    // ///LENS///////////////
+    // const lens = {
+    // radius: 150,
+    // scale: 5,
+    // x: 500,
+    // y: 1000 * 0.33
+    // };
 
-  const rect = tooltip
-    .append("rect")
-    .classed("background", true)
-    .attr("x", 0)
-    .attr("y", 0)
-    .style("filter", "url(#drop-shadow)");
+    // var drag = d3.behavior.drag()
+    //   .on("dragstart", function() {
+    //     d3.event.sourceEvent.stopPropagation()
+    //   })
+    //   .on("drag", dragmove);
 
-// two key/values max rn
-  const text = tooltip
-    .append("text")
-    .classed("text", true)
-    .attr("x", 0)
-    .attr("y", 0);
-
-  function appendTspan(t, c, x, dy, text) {
-    if (text !== "")
-      t.append("tspan")
-        .classed(c, true) //if labeled then open box
-        .attr("x", x)
-        .attr("dy", dy)
-        .text(text);
-  }
-
-  appendTspan(text, "title", 5, "1em", title);
-  appendTspan(text, "detail", 5, "1.2em", text1);
-  appendTspan(text, "detail", "4.5em", 0, value1);
-  appendTspan(text, "detail", 5, "1em", text2);
-  appendTspan(text, "detail", "4.5em", 0, value2);
-
-  // Position 
-  const bbox = text.node().getBBox();
-  rect
-    .attr("width", bbox.width + 10)
-    .attr("height", bbox.height + 11)
-    .attr("y", -4);
-
-  // Manage the bottom and right edges 
-  let x = cursor[0];
-  let y = cursor[1] + 26;
-  if (x + bbox.width + 8 + 2 > w) x = x - bbox.width - 10;
-  if (y + bbox.height + 26 + 2 > h) y = y - bbox.height - 10 - 26;
-  tooltip.attr("transform", `translate(${x},${y})`);
-} */
-
+    // svg.append("circle").attr("r", lens.radius).attr("id", "lens").call(drag);
+    // // lens.x = 1000 * 0.5;
+    // // lens.y = 500;
+    // updatePositions();
+    // add_interaction(svg.node());
 
   // PLACEMENT OF ALL ACTORS//////////////////////////
 var data = {};
@@ -99,21 +66,12 @@ var posY = [789, 636, 656, 121, 229, 429, 649, 107, 650, 795, 247, 151, 507, 668
 
 const actors = {};
 var keys = [];
-  //PARSING POS/////////////////////////////////
-  // d3.json("nodesmap.json", function(err, d) {
-  //   if(err) {
-  //     throw err;
-  //   } else {
-  //     console.log(d);
-  //     pos = d;
-  //   }
-    
-  // });
 
   //PARSING ACTORS////////////////
   var i = 0;
   var count = 0;
     d3.csv("movies.csv", function(data) {
+
       //check csv 3 times to get all actors
       data.forEach(function(d) {
         if(d.title_year == 2011){
@@ -189,27 +147,21 @@ var keys = [];
         } 
          
       });
-      
-
-
-
 
       for(var k = 0; k < keys.length; k++) {
         circGen(actors[keys[k]]);
       }
-      //console.log(actor);
     }); 
-var clicked = false;
 
   ///CIRCLE GENERATOR/////////////////
+  var clicked = false;
   function circGen(actor) {
-    //console.log(actors["Fred Ward"]); ---> THIS WORKS - just get string names of costars
     var col = colByMov(actor.movies);
     var siz = sizeByLikes(actor.likes);
     var circ = svg.append("g")
+      .classed("leaf", true)
       .attr("transform", "translate(" + actor.x + "," + actor.y + ")")
-      .attr("class", "first")
-      //.call(drag)
+      .attr("id", "actors")
       .append("circle").attr({
         r: siz,
       })
@@ -217,22 +169,22 @@ var clicked = false;
       //.on("mouseout", handleMouseOut)
       .on("click", function() {
         clicked = !clicked;
+        
         for (var i = 0; i < actor.costarNames.length; i++) {
           console.log(actors[actor.costarNames[i]]);
           makeLine(actor, actors[actor.costarNames[i]], clicked);
         }
       })
-      .style("fill", col);
-      //.style("border", "gray");
+      .style("fill", col)
   }
 
   ///HELPER FUNCTIONS////////
   function sizeByLikes(likes) {
     var size = 3;
-    if(likes <= 0) {
-      size = 5;
+    if(likes <= 3000) {
+      size = 3;
     }
-    if(0 < likes <= 6000) {
+    if(3000 < likes <= 6000) {
       size = 6;
     }
     if(likes > 6000) { //can be bigger with this math
@@ -252,7 +204,7 @@ var clicked = false;
       col = "#b5c92d"; //green
     }
     if(mov == 1) {
-      col = "#db2872"; //purp
+      col = "#BB698B"; //purp
     }
     return col;
   }
@@ -288,236 +240,155 @@ var clicked = false;
     // Select text by id and then remove
     d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
   }
-
-
   function makeLine(p1, p2, clicked) {
     if(clicked){
+      p1.clicked = p1.id;
       var line = svg.append("line")
-      .style("stroke", "black")
+      .style("stroke", colByMov(p2.movies))
       .attr("x1", p1.x)
       .attr("y1", p1.y)
       .attr("x2", p2.x)
       .attr("y2", p2.y)
-
-      .append("text").attr({
-       id: "t" + p1.x + "-" + p1.y + "-" + p2.x  // Create an id for text so we can select it later for removing on mouseout
-    });
+      .style("stroke-width", p1.costars[p2.name]);
     } else {
+      p1.clicked = -1;
       d3.select("line").remove(); 
    }
 
   }
 
 
-  //HOW TO CONNECT/////////////////
+//   //ADD LENS TO ZOOM FOR INFO/////////////////
 
-  //Drag nodes/////////////////////
-var drag = d3.behavior.drag()
-  .on("dragstart", function() {
-    d3.event.sourceEvent.stopPropagation()
-  })
-  .on("drag", dragmove);
+//   function updatePositions(actor) {
+//     d3.select("svg #lens")
+//     .attr("r", lens.radius)
+//     .attr("transform", "translate(" + lens.x + "," + lens.y + ")");
+
+//     //all possible affected circs
+//     let change = d3.select("#actors").selectAll(".leaf");
+
+//     change.attr("transform", (d, i, e) => { //lol
+//       console.log(d);
+//     let pos = [d.x, d.y]; //actor position
+
+//     let diffX = pos[0] - lens.x,
+//       diffY = pos[1] - lens.y,
+//       dist = Math.sqrt(diffX ** 2 + diffY ** 2), //distance formula
+//       diffUniX = diffX / dist,
+//       diffUniY = diffY / dist,
+//       targetX,
+//       targetY;
+//     if (dist < lens.radius) {
+//       targetX = lens.x + lens.scale * diffX;
+//       targetY = lens.y + lens.scale * diffY;
+//     } else {
+//       targetX = lens.x + diffUniX * (dist - lens.radius);
+//       targetY = lens.y + diffUniY * (dist - lens.radius);
+//     }
+//     pos[0] += (targetX - pos[0]) * 0.8;
+//     pos[1] += (targetY - pos[1]) * 0.8;
+//     //if in the lens or out
+//     if (dist < lens.radius) {
+//       d3.select(e[i]).classed("labeled", true);
+//     } else {
+//       d3.select(e[i]).classed("labeled", false);
+//     }
+//     return "translate(${pos})";
+//   });
+//   }
+
+//   function zoomSlightly() {
+//   if (zoom <= 1) {
+//     zoom = 1.2;
+//     updatePositions(/*transition*/ true);
+//   }
+// }
+
+//   //Drag lens/////////////////////
+//   function add_interaction(chart) {
+
+//   var drag = d3.behavior.drag()
+//   .on("dragstart", function() {
+//     d3.event.sourceEvent.stopPropagation()
+//   })
+//   .on("drag", dragmove);
+//   /* drag the lens */
+//   // const drag = d3.drag();
+//   // drag
+//   //   .on("start", function() {
+//   //     lens.x0 = lens.x - d3.event.x;
+//   //     lens.y0 = lens.y - d3.event.y;
+//   //   })
+//   //   .on("drag", function() {
+//   //     lens.x = lens.x0 + d3.event.x;
+//   //     lens.y = lens.y0 + d3.event.y;
+      
+//   //   });
+
+//   zoom = 1;
+//   svg.on("touch mousedown", zoomSlightly).call(drag);
+//   svg.selectAll(".leaf circle").on("click", click);
+//   svg.on("click", click);
+
+// }
+// function click(d) {
+//   d3.event.stopPropagation();
+//   if (d === undefined || d.name === clicked) {
+//     clicked = -1;
+//   } else {
+//     clicked = d.name;
+//   }
+//   //inout();
+// }
 
 
+// //Drag handler
+// function dragmove(d) {
+//   var x = d3.event.x;
+//   var y = d3.event.y;
+//   d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
+//   for (var i = 0; i < posX.length; i++) {
+//     let pos = [posx[i], posY[i]]; //actor position
 
-//Second node
+//     let diffX = pos[0] - lens.x,
+//       diffY = pos[1] - lens.y,
+//       dist = Math.sqrt(diffX ** 2 + diffY ** 2), //distance formula
+//       diffUniX = diffX / dist,
+//       diffUniY = diffY / dist,
+//       targetX,
+//       targetY;
+//     if (dist < lens.radius) {
+//       targetX = lens.x + lens.scale * diffX;
+//       targetY = lens.y + lens.scale * diffY;
+//     } else {
+//       targetX = lens.x + diffUniX * (dist - lens.radius);
+//       targetY = lens.y + diffUniY * (dist - lens.radius);
+//     }
+//     pos[0] += (targetX - pos[0]) * 0.8;
+//     pos[1] += (targetY - pos[1]) * 0.8;
+
+//     //if in the lens or out
+//     if (dist < lens.radius) {
+//       //get the actor name and print it
+//       d3.select(e[i]).classed("labeled", true);
+//     } else {
+//       //get rid of the actor name
+//       d3.select(e[i]).classed("labeled", false);
+//     }
+//   }
+//   updatePositions(); //check circle labels
+// };
+
+
+// //Second node
 // var g2 = svg.append("g")
 //   .attr("transform", "translate(" + 250 + "," + 300 + ")")
-//   .attr("class", "second")
 //   .call(drag)
 //   .append("circle").attr({
-//     r: 20,
+//     r: lens.radius,
 //   })
 //   .style("fill", "#00F");
-
-//Drag handler
-function dragmove(d) {
-  var x = d3.event.x;
-  var y = d3.event.y;
-  d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
-  if(d3.select(this).attr("class") == "first") {
-    line.attr("x1", x);
-    line.attr("y1", y);
-  } else {
-    line.attr("x2", x);
-    line.attr("y2", y);
-  };
-};
-
-
-
-  // D3 to grab all the data needed from "movies.csv"
-  // d3.csv('movies.csv', function(csv) {
-  //     // Can use rollup function from P2 to total number of times
-  //     // an actor's name shows up (this will give us total movies
-  //     // they are in according to the dataset)
-  //     for (var i=0; i<csv.length; ++i) {
-		// 	csv[i].actor_1_name = csv[i].actor_1_name;
-		// 	csv[i].actor_2_name = csv[i].actor_2_name;
-  //     csv[i].actor_3_name = csv[i].actor_3_name;
-  //     csv[i].movie_title = csv[i].movie_title;
-
-  //     //only need facebook likes for 1 actor (I think) for circle/
-  //     // diamter display
-  //     csv[i].actor_1_facebook_likes = Number(csv[i].actor_1_facebook_likes);
-  //     csv[i].gross = Number(csv[i].gross);
-	 //    }
-
-
-
-  //     console.log(csv); /*<--used to test that data was entered correctly
-  //                           and that strings converted to integers */
-
-  //     var width = 960, height = 900, colors = d3.scale.category10();
-
-  //     var n = 1605, // number of nodes
-  //         m = 1607, // number of links
-  //         charge = -1000;
-
-  //     var svg = d3.select("body").append("svg")
-  //         .attr("width", width)
-  //         .attr("height", height)
-  //         .on("mousedown", create);
-
-  //     create();
-
-  //     function create () {
-  //       svg.selectAll(".link, .node").remove();
-  //       randomGraph(n, m, charge);
-  //     }
-
-  //     function randomGraph (n, m, charge) { //creates a random graph on n nodes and m links
-  //       var nodes = d3.range(n).map(Object),
-  //           list  = randomChoose(unorderedPairs(d3.range(n)), m),
-  //           links = list.map(function (a) { return {source: a[0], target: a[1]} });
-
-  //       var force = d3.layout.force()
-  //           .size([width, height])
-  //           .nodes(nodes)
-  //           .links(links)
-  //           .charge(charge)
-  //           .on("tick", tick)
-  //           .start();
-
-  //       var svgLinks = svg.selectAll(".link").data(links)
-  //         .enter().append("line")
-  //           .attr("class", "link");
-
-  //       var svgNodes = svg.selectAll(".node").data(nodes)
-  //         .enter().append("circle")
-  //           .attr("class", "node")
-  //           .attr("r", 3)
-  //           .style("fill", "white");
-
-  //       svgNodes.transition().duration(800)
-  //           .attr("r", function (d) { return 3 + 3 * d.weight })
-  //           .style("fill", function (d) { return colors(d.weight) });
-
-  //       svgLinks.transition().duration(300)
-  //           .style("stroke-width", 3);
-
-  //       function tick () {
-  //         svgNodes
-  //             .attr("cx", function(d) { return d.x })
-  //             .attr("cy", function(d) { return d.y });
-
-  //         svgLinks
-  //             .attr("x1", function(d) { return d.source.x })
-  //             .attr("y1", function(d) { return d.source.y })
-  //             .attr("x2", function(d) { return d.target.x })
-  //             .attr("y2", function(d) { return d.target.y });
-  //       }
-  //     }
-
-
-  // //PARSING DATA////////////////
-  // var actors = {};
-  // var i = 0;
-  //   d3.csv("movies.csv", function(data) {
-  //     //check csv 3 times to get all actors
-  //     data.forEach(function(d) {
-
-  //       if(actors[d.actor_1_name]) {
-  //         actors[d.actor_1_name].movies++;
-  //         // if (actors[d.actor_1_name].costars[d.actor_3_name]){
-
-  //         // }
-  //         actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) ? actors[d.actor_1_name].costars[d.actor_3_name]+1 : 1;
-  //         actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) ? actors[d.actor_1_name].costars[d.actor_2_name]+1 : 1;
-  //       } else {
-  //         actors[d.actor_1_name] = {
-  //         name: d.actor_1_name,
-  //         likes: d.actor_1_facebook_likes,
-  //         movies: 1,
-  //         costars: {}
-  //       };
-  //       actors[d.actor_1_name].costars[d.actor_3_name] = (actors[d.actor_1_name].costars[d.actor_3_name]) = 1;
-  //       actors[d.actor_1_name].costars[d.actor_2_name] = (actors[d.actor_1_name].costars[d.actor_2_name]) = 1;
-  //       }
-  //       actors[d.actor_1_name].id = i;
-  //       i++;
-
-
-  //       if(actors[d.actor_2_name]) {
-  //         actors[d.actor_2_name].movies++;
-  //         actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) ? actors[d.actor_2_name].costars[d.actor_3_name]+1 : 1;
-  //         actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) ? actors[d.actor_2_name].costars[d.actor_1_name]+1 : 1;
-  //       } else {
-  //         actors[d.actor_2_name] = {
-  //         name: d.actor_2_name,
-  //         likes: d.actor_2_facebook_likes,
-  //         movies: 1,
-  //         costars: {}
-  //       };
-  //         actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) = 1;
-  //         actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) = 1;
-  //       }
-  //       actors[d.actor_2_name].id = i;
-  //       i++;
-
-
-
-  //       if(actors[d.actor_3_name]){
-  //         actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) ? actors[d.actor_3_name].costars[d.actor_2_name]+1 : 1;
-  //         actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) ? actors[d.actor_3_name].costars[d.actor_1_name]+1 : 1;
-  //        } else { //make a new var
-  //         actors[d.actor_3_name] = {
-  //         name: d.actor_3_name,
-  //         likes: d.actor_3_facebook_likes,
-  //         movies: 1,
-  //         costars: {}
-  //         };
-  //         actors[d.actor_3_name].costars[d.actor_2_name] = (actors[d.actor_3_name].costars[d.actor_2_name]) = 1;
-  //         actors[d.actor_3_name].costars[d.actor_1_name] = (actors[d.actor_3_name].costars[d.actor_1_name]) = 1;
-  //        }
-  //        actors[d.actor_3_name].id = i;
-  //       i++;
-     
-  //     });
-  //       console.log(actors);
-  //   }); 
-
-    
-
-      // function randomChoose (s, k) { // returns a random k element subset of s
-      //   var a = [], i = -1, j;
-      //   while (++i < k) {
-      //     j = Math.floor(Math.random() * s.length);
-      //     a.push(s.splice(j, 1)[0]);
-      //   };
-      //   return a;
-      // }
-
-      // function unorderedPairs (s) { // returns the list of all unordered pairs from s
-      //   var i = -1, a = [], j;
-      //   while (++i < s.length) {
-      //     j = i;
-      //     while (++j < s.length) a.push([s[i],s[j]])
-      //   };
-      //   return a;
-      // }
-      //  });
-
 
 
   </script>
