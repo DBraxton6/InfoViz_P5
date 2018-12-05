@@ -1,22 +1,4 @@
-<style type="text/css"> 
-  body{background: #f0f0f0;}
-  #lens {
-  fill: white;
-  stroke: #666;
-  stroke-width: 1px; }
-  g.leaf.labeled text { opacity: 1; }
-  g.leaf.clicked circle { fill: #222222; }
-  </style>
-
-   <body>
-    <svg width="2000" height="2000" font-family="Montserrat" font-size="10" text-anchor="middle"></svg>
-    <script type="text/javascript" src="d3.js"></script>
-    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
-<!--    <div id="wrapper">
-    <div id="p5Map"></div>
-    <div id="drawArea"></div>
-   </div> -->
-  <script>
+<<<<<<< HEAD
   // SPACE
     var svg = d3.select("svg"),
     width = +svg.attr("width"),
@@ -366,3 +348,6 @@ function setTitle(title) {
   const w = text.node().getBBox().width;
   d3.select("svg g#maintitle rect").attr("width", !w ? 0 : w + 2 * 9);
 }
+=======
+
+>>>>>>> e10cb4cddb7b0b543bb825cbf49448a0cd1dfcda
