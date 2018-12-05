@@ -278,27 +278,10 @@ var keys = [];
           var duration = 300;
 
       if(clicked) {
-<<<<<<< HEAD
         //find the actorclicked box AND affected ones
-=======
-<<<<<<< HEAD
-        //NEEDS EDITING
-        //CHANGE HOVERBOX TO SHOW:
-        //for clicked circ: # of costars + movies total
-        //for costars of clicked circ: # of movies shared with clicked actor
-
-        for (var i = 0; i < actor.costarNames.length; i++) {
-          circ.transition().duration(duration).delay(i*duration);
-        //}
-
-        div.html("<b>" + actor.name + "<b><br><br> # of Co-Stars: " + "")
-          .style("left", (d3.event.pageX) + "px")
+        div.html("<b>" + actor.name + "</b> <br><br> # of Co-Stars: " + actor.costars)
+          .style("left", (d3.event.pageX + 5) + "px")
           .style("top", (d3.event.pageY -28) + "px");
-        }
-=======
-        //find the actorclicked box AND affected ones
->>>>>>> e10cb4cddb7b0b543bb825cbf49448a0cd1dfcda
->>>>>>> 6f6e7e3dc00275072641f69fed52a3e7113ed2ff
 
       } else {
       for (var i = 0; i < actor.length; i++) {
@@ -360,11 +343,7 @@ var keys = [];
       .attr("x2", p2.x)
       .attr("y2", p2.y)
       .style("stroke-width", p1.costars[p2.name]);
-<<<<<<< HEAD
 
-=======
-      
->>>>>>> 6f6e7e3dc00275072641f69fed52a3e7113ed2ff
     } else {
       //p1.clicked = -1;
 
