@@ -283,20 +283,18 @@ var keys = [];
         //for clicked circ: # of costars + movies total
         //for costars of clicked circ: # of movies shared with clicked actor
 
-        // for (var i = 0; i < actor.costarNames.length; i++) {
-        //   circ.transition().duration(duration).delay(i*duration)
-        //     .attr("r", actor.likes);
-        // }
-        //
-        // div.html(actor.name + ": <br>" + actor.likes)
-        //   .style("left", (d3.event.pageX) + "px")
-        //   .style("top", (d3.event.pageY -28) + "px");
+        for (var i = 0; i < actor.costarNames.length; i++) {
+          circ.transition().duration(duration).delay(i*duration);
+        //}
+
+        div.html("<b>" + actor.name + "<b><br><br> # of Co-Stars: " + "")
+          .style("left", (d3.event.pageX) + "px")
+          .style("top", (d3.event.pageY -28) + "px");
+        }
 
       } else {
       for (var i = 0; i < actor.length; i++) {
-        circ.transition().duration(duration).delay(i*duration)
-          .attr("r", actor.likes)
-          .attr("r", actor.movies);
+        circ.transition().duration(duration).delay(i*duration);
       }
 
       div.html("<b>" + actor.name + "</b> <br><br> Fb Likes: " + actor.likes + "<br>Movies: " + actor.movies)
