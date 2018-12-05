@@ -48,13 +48,12 @@
 
   // TITLE
     svg.append("text")
-    .attr("x", 1100)
-    .attr("y", 0 )
+    .attr("x", 1025)
+    .attr("y", 0)
     .attr("dy", "3.5em" )
     .attr("text-anchor", "start")
-    .style("font-size", "28px")
+    .style("font-size", "26px")
     .style("font-weight", "bold")
-
     .text("Actors and Their Co-Stars ")
 
 //Tooltip - HOVER
@@ -271,7 +270,7 @@ var keys = [];
       })
       .style("fill", col)
 
-      .on("mouseover", function(data) {
+      .on("mouseover", function() {
         div.transition()
           .duration(0)
           .style("opacity", .9);
@@ -301,13 +300,13 @@ var keys = [];
       }
 
       div.html("<b>" + actor.name + "</b> <br><br> Fb Likes: " + actor.likes + "<br>Movies: " + actor.movies)
-        .style("left", (d3.event.pageX) + "px")
+        .style("left", (d3.event.pageX + 5) + "px")
         .style("top", (d3.event.pageY -28) + "px");
     }
 
   })
 
-      .on("mouseout", function(d) {
+      .on("mouseout", function() {
         div.transition()
         .duration(500)
         .style("opacity", 0);
@@ -350,33 +349,33 @@ var keys = [];
 
 
     // Create Event Handlers for mouse
-  function handleMouseOver(d, i) {  // Add interactivity
-    // Use D3 to select element, change color and size
-    d3.select(this).attr({
-      fill: "orange",
-      r: r * 2
-    });
-
-    // Specify where to put label of text
-    svg.append("text").attr({
-       id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
-        x: function() { return xScale(d.x) - 30; },
-        y: function() { return yScale(d.y) - 15; }
-    })
-    .text(function() {
-      return [d.x, d.y];  // Value of the text
-    });
-  }
-  function handleMouseOut(d, i) {
-    // Use D3 to select element, change color back to normal
-    d3.select(this).attr({
-      fill: "black",
-      r: r
-    });
-
-    // Select text by id and then remove
-    d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
-  }
+  // function handleMouseOver(d, i) {  // Add interactivity
+  //   // Use D3 to select element, change color and size
+  //   d3.select(this).attr({
+  //     fill: "orange",
+  //     r: r * 2
+  //   });
+  //
+  //   // Specify where to put label of text
+  //   svg.append("text").attr({
+  //      id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
+  //       x: function() { return xScale(d.x) - 30; },
+  //       y: function() { return yScale(d.y) - 15; }
+  //   })
+  //   .text(function() {
+  //     return [d.x, d.y];  // Value of the text
+  //   });
+  // }
+  // function handleMouseOut(d, i) {
+  //   // Use D3 to select element, change color back to normal
+  //   d3.select(this).attr({
+  //     fill: "black",
+  //     r: r
+  //   });
+  //
+  //   // Select text by id and then remove
+  //   d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
+  // }
   function makeLine(p1, p2, clicked) {
     if(clicked){
       p1.clicked = p1.id;
