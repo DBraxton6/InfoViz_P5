@@ -1,4 +1,3 @@
-<<<<<<< HEAD
   // SPACE
     var svg = d3.select("svg"),
     width = +svg.attr("width"),
