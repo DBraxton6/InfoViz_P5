@@ -33,7 +33,7 @@
   </style>
 
    <body>
-    <svg width="2000" height="2000" font-family="Montserrat" font-size="10" text-anchor="middle"></svg>
+    <svg width="1500" height="1000" font-family="Montserrat" font-size="10" text-anchor="middle"></svg>
     <script type="text/javascript" src="d3.js"></script>
     <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
 <!--    <div id="wrapper">
@@ -208,7 +208,7 @@ var keys = [];
           actors[d.actor_2_name].costars[d.actor_3_name] = (actors[d.actor_2_name].costars[d.actor_3_name]) = 1;
           actors[d.actor_2_name].costars[d.actor_1_name] = (actors[d.actor_2_name].costars[d.actor_1_name]) = 1;
         actors[d.actor_2_name].id = i;
-        keys[i] = d.actor_3_name;
+        keys[i] = d.actor_2_name;
         i++;
         }
 
@@ -255,7 +255,7 @@ var keys = [];
     var circ = svg.append("g")
       .classed("leaf", true)
       .attr("transform", "translate(" + actor.x + "," + actor.y + ")")
-      .attr("id", "actors")
+      .attr("id", actor.name)
       .append("circle").attr({
         r: siz
       })
@@ -263,13 +263,13 @@ var keys = [];
       //.on("mouseout", handleMouseOut)
       .on("click", function() {
         clicked = !clicked;
-
+        console.log(clicked);
+        d3.select("line").remove();
         for (var i = 0; i < actor.costarNames.length; i++) {
-          console.log(actors[actor.costarNames[i]]);
           makeLine(actor, actors[actor.costarNames[i]], clicked);
         }
       })
-      .style("fill", col)
+      .style("fill", colByMov(actor.movies))
 
       .on("mouseover", function(data) {
         div.transition()
@@ -279,19 +279,7 @@ var keys = [];
           var duration = 300;
 
       if(clicked) {
-        //NEEDS EDITING
-        //CHANGE HOVERBOX TO SHOW:
-        //for clicked circ: # of costars + movies total
-        //for costars of clicked circ: # of movies shared with clicked actor
-
-        // for (var i = 0; i < actor.costarNames.length; i++) {
-        //   circ.transition().duration(duration).delay(i*duration)
-        //     .attr("r", actor.likes);
-        // }
-        //
-        // div.html(actor.name + ": <br>" + actor.likes)
-        //   .style("left", (d3.event.pageX) + "px")
-        //   .style("top", (d3.event.pageY -28) + "px");
+        //find the actorclicked box AND affected ones
 
       } else {
       for (var i = 0; i < actor.length; i++) {
@@ -345,6 +333,24 @@ var keys = [];
     }
     return col;
   }
+  function makeLine(p1, p2, clicked) {
+    if(clicked){
+      //p1.clicked = p1.id;
+      var line = svg.append("line")
+      .style("stroke", colByMov(p2.movies))
+      .attr("x1", p1.x)
+      .attr("y1", p1.y)
+      .attr("x2", p2.x)
+      .attr("y2", p2.y)
+      .style("stroke-width", p1.costars[p2.name]);
+      
+    } else {
+      //p1.clicked = -1;
+
+      d3.select("line").remove();
+   }
+
+  }
 
   //IF CLICKED OR HOVERED////////////////
 
@@ -377,24 +383,7 @@ var keys = [];
     // Select text by id and then remove
     d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
   }
-  function makeLine(p1, p2, clicked) {
-    if(clicked){
-      p1.clicked = p1.id;
-      var line = svg.append("line")
-      .style("stroke", colByMov(p2.movies))
-      .attr("x1", p1.x)
-      .attr("y1", p1.y)
-      .attr("x2", p2.x)
-      .attr("y2", p2.y)
-      .style("stroke-width", p1.costars[p2.name]);
-    } else {
-      p1.clicked = -1;
-      d3.select("line").remove();
-   }
 
-  }
-
-      d3.select("line").remove();
 
 //   //ADD LENS TO ZOOM FOR INFO/////////////////
 
