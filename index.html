@@ -282,15 +282,16 @@ var keys = [];
 
           var duration = 300;
 
-          if(clicked) {
-            //find the actorclicked box AND affected ones
+      if(clicked) {
+        //find the actorclicked box AND affected ones
+        div.html("<b>" + actor.name + "</b> <br><br> # of Co-Stars: " + actor.costars)
+          .style("left", (d3.event.pageX + 5) + "px")
+          .style("top", (d3.event.pageY -28) + "px");
 
-          } else {
-          for (var i = 0; i < actor.length; i++) {
-            circ.transition().duration(duration).delay(i*duration)
-              .attr("r", actor.likes)
-              .attr("r", actor.movies);
-          }
+      } else {
+      for (var i = 0; i < actor.length; i++) {
+        circ.transition().duration(duration).delay(i*duration);
+      }
 
           div.html("<b>" + actor.name + "</b> <br><br> Fb Likes: " + actor.likes + "<br>Movies: " + actor.movies)
             .style("left", (d3.event.pageX + 5) + "px")
@@ -347,7 +348,7 @@ var keys = [];
       .attr("x2", p2.x)
       .attr("y2", p2.y)
       .style("stroke-width", p1.costars[p2.name]);
-      
+
     } else {
       //p1.clicked = -1;
 
