@@ -247,14 +247,14 @@ var keys = [];
 
 
   ///CIRCLE GENERATOR/////////////////
-  var clicked = false;
+  var clicked;
   function circGen(actor) {
     var col = colByMov(actor.movies);
     var siz = sizeByLikes(actor.likes);
     var circ = svg.append("g")
       .classed("actor",true)
       .attr("id", actor.name)
-      .classed("clicked", false)
+      //.classed("clicked", false)
       .attr("transform", "translate(" + actor.x + "," + actor.y + ")")
       .append("circle").attr({
         r: siz
@@ -262,10 +262,11 @@ var keys = [];
       //.on("mouseover", handleMouseOver)
       //.on("mouseout", handleMouseOut)
       .on("click", function() {
-        if (clicked == undefined || clicked != null) {
-          clicked = -1;
-        } else {
+        //switch click
+        if (clicked == null || clicked == "") {
           clicked = actor.name;
+        } else {
+          clicked = "";
         }
         d3.select("line").remove();
         for (var i = 0; i < actor.costarNames.length; i++) {
@@ -282,9 +283,9 @@ var keys = [];
 
           var duration = 300;
 
-      if(clicked) {
+      if(clicked == actor.name) {
         //find the actorclicked box AND affected ones
-        div.html("<b>" + actor.name + "</b> <br><br> # of Co-Stars: " + actor.costars)
+        div.html("<b>" + actor.name + "</b> <br><br> # of Co-Stars: " + actor.costarNames.length)
           .style("left", (d3.event.pageX + 5) + "px")
           .style("top", (d3.event.pageY -28) + "px");
 
@@ -293,11 +294,21 @@ var keys = [];
         circ.transition().duration(duration).delay(i*duration);
       }
 
-          div.html("<b>" + actor.name + "</b> <br><br> Fb Likes: " + actor.likes + "<br>Movies: " + actor.movies)
+      div.html("<b>" + actor.name + "</b> <br><br> Fb Likes: " + actor.likes + "<br>Movies: " + actor.movies)
+        .style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY -28) + "px");
+      }
+
+      if(clicked) {
+        for (var i = 0; i < actors[clicked].costarNames.length; i++) {
+          if(actors[clicked].costarNames[i] == actor.name) {
+            //affected hover
+            div.html("<b>" + actor.name + "</b> <br><br> # Movies Shared: " + actors[clicked].costars[actor.name])
             .style("left", (d3.event.pageX + 5) + "px")
             .style("top", (d3.event.pageY -28) + "px");
+          }
         }
-
+      }
       })
 
       .on("mouseout", function() {
