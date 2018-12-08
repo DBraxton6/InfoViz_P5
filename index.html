@@ -44,7 +44,7 @@
   // SPACE
     var svg = d3.select("svg"),
     width = +svg.attr("width"),
-    height = +svg.attr("height");
+    height = +svg.attr("100%");
 
   // TITLE
     svg.append("text")
@@ -247,29 +247,35 @@ var keys = [];
 
 
   ///CIRCLE GENERATOR/////////////////
-  var clicked = false;
+  var clicked;
   function circGen(actor) {
     var col = colByMov(actor.movies);
     var siz = sizeByLikes(actor.likes);
     var circ = svg.append("g")
-      .classed("leaf", true)
-      .attr("transform", "translate(" + actor.x + "," + actor.y + ")")
+      .classed("actor",true)
       .attr("id", actor.name)
+      //.classed("clicked", false)
+      .attr("transform", "translate(" + actor.x + "," + actor.y + ")")
       .append("circle").attr({
         r: siz
       })
       //.on("mouseover", handleMouseOver)
       //.on("mouseout", handleMouseOut)
       .on("click", function() {
-        clicked = !clicked;
-        console.log(clicked);
+        //switch click
+        if (clicked == null || clicked == "") {
+          clicked = actor.name;
+        } else {
+          clicked = "";
+        }
         d3.select("line").remove();
         for (var i = 0; i < actor.costarNames.length; i++) {
-          makeLine(actor, actors[actor.costarNames[i]], clicked);
+          //svg.selectAll(".journal circle").on("click", click);
+
+          makeLine(actor, actors[actor.costarNames[i]]);
         }
       })
       .style("fill", colByMov(actor.movies))
-
       .on("mouseover", function() {
         div.transition()
           .duration(0)
@@ -277,9 +283,9 @@ var keys = [];
 
           var duration = 300;
 
-      if(clicked) {
+      if(clicked == actor.name) {
         //find the actorclicked box AND affected ones
-        div.html("<b>" + actor.name + "</b> <br><br> # of Co-Stars: " + actor.costars)
+        div.html("<b>" + actor.name + "</b> <br><br> # of Co-Stars: " + actor.costarNames.length)
           .style("left", (d3.event.pageX + 5) + "px")
           .style("top", (d3.event.pageY -28) + "px");
 
@@ -291,9 +297,19 @@ var keys = [];
       div.html("<b>" + actor.name + "</b> <br><br> Fb Likes: " + actor.likes + "<br>Movies: " + actor.movies)
         .style("left", (d3.event.pageX + 5) + "px")
         .style("top", (d3.event.pageY -28) + "px");
-    }
+      }
 
-  })
+      if(clicked) {
+        for (var i = 0; i < actors[clicked].costarNames.length; i++) {
+          if(actors[clicked].costarNames[i] == actor.name) {
+            //affected hover
+            div.html("<b>" + actor.name + "</b> <br><br> # Movies Shared: " + actors[clicked].costars[actor.name])
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY -28) + "px");
+          }
+        }
+      }
+      })
 
       .on("mouseout", function() {
         div.transition()
@@ -333,7 +349,7 @@ var keys = [];
     }
     return col;
   }
-  function makeLine(p1, p2, clicked) {
+  function makeLine(p1, p2) {
     if(clicked){
       //p1.clicked = p1.id;
       var line = svg.append("line")
@@ -351,6 +367,27 @@ var keys = [];
    }
 
   }
+  // function click(d) {
+  //  // d3.event.stopPropagation();
+  // var costars = d.costarNames;
+  // console.log(d);
+  //   //switch click
+  //   if (d === undefined || d.name === clicked) {
+  //     clicked = -1;
+  //     d3.selectAll("#" + d.name).classed("clicked", false);
+  //     for (var i = 0; i < costars.length; i++) {
+  //       d3.selectAll("#" + costars[i]).classed("affected", false);
+  //     }
+      
+  //   } else {
+  //     clicked = d.name;
+  //     d3.selectAll("#" + d.name).classed("clicked", true);
+  //     for (var i = 0; i < costars.length; i++) {
+  //       d3.selectAll("#" + costars[i]).classed("affected", true);
+  //       makeLine(d, actors[costars[i]]);
+  //     }
+  //   }
+  // }
 
   //IF CLICKED OR HOVERED////////////////
 
@@ -386,7 +423,7 @@ var keys = [];
   // }
 
 
-
+ 
 //   //ADD LENS TO ZOOM FOR INFO/////////////////
 
 //   function updatePositions(actor) {
