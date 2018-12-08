@@ -519,36 +519,32 @@ var keys = [];
 //   })
 //   .style("fill", "#00F");
 
-var legend = svg.selectAll(".legend")
- .data(data).enter()
- .append("g")
- .attr("class","legend")
- .attr("transform", "translate(" + 1000 + "," + 60 + ")");
+var legend = svg.append("g")
+ .attr("class","legend");
 
+ legend.append("text")  //Movie Range header
+  .attr("x",31)
+  .attr("dy", "-.2em")
+  .attr("y",-10)
+  .text("Movie Range")
+  .attr("font-size", "17px");
 
   legend.append("rect")
-    .attr("x", 1000)
+    .attr("x", 1025)
     .attr("y", 100)
     .attr("width", 15)
     .attr("height", 15)
-   .style("fill", "#3e9ad6");
+   .style("fill", "#BB698B");
 
 
    legend.append("text")
-    .attr("x", 1000)
-     .attr("text-anchor", "start")
-    .attr("dy", "1em")
+    .attr("x", 1030)
     .attr("y", 100)
-    .text("> 3 Movies")
+    .text(" = 1 movie")
    .attr("font-size", "12px");
 
 
-   legend.append("text")
-    .attr("x",31)
-    .attr("dy", "-.2em")
-    .attr("y",-10)
-    .text("Movie Range")
-   .attr("font-size", "17px");
+
 
 
   </script>
