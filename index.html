@@ -33,7 +33,7 @@
   </style>
 
    <body>
-    <svg width="1500" height="1000" font-family="Montserrat" font-size="10" text-anchor="middle"></svg>
+    <svg width="1325" height="1000" font-family="Montserrat" font-size="10" text-anchor="middle"></svg>
     <script type="text/javascript" src="d3.js"></script>
     <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
 <!--    <div id="wrapper">
@@ -378,7 +378,7 @@ var keys = [];
   //     for (var i = 0; i < costars.length; i++) {
   //       d3.selectAll("#" + costars[i]).classed("affected", false);
   //     }
-      
+
   //   } else {
   //     clicked = d.name;
   //     d3.selectAll("#" + d.name).classed("clicked", true);
@@ -423,7 +423,7 @@ var keys = [];
   // }
 
 
- 
+
 //   //ADD LENS TO ZOOM FOR INFO/////////////////
 
 //   function updatePositions(actor) {
@@ -559,26 +559,71 @@ var keys = [];
 var legend = svg.append("g")
  .attr("class","legend");
 
- legend.append("text")  //Movie Range header
-  .attr("x",31)
-  .attr("dy", "-.2em")
-  .attr("y",-10)
-  .text("Movie Range")
-  .attr("font-size", "17px");
+ svg.append("text")
+ .attr("x", 1103)
+ .attr("y", 135)
+ .style("font-size", "18px")
+ .style("font-weight", "bold")
+ .text("Movie Range:");
 
   legend.append("rect")
-    .attr("x", 1025)
-    .attr("y", 100)
+    .attr("x", 1050)
+    .attr("y", 145)
     .attr("width", 15)
     .attr("height", 15)
-   .style("fill", "#BB698B");
+   .style("fill", "#BB698B"); //purple
+
+   legend.append("rect")
+     .attr("x", 1050)
+     .attr("y", 175)
+     .attr("width", 15)
+     .attr("height", 15)
+    .style("fill", "b5c92d"); //green
+
+    legend.append("rect")
+      .attr("x", 1050)
+      .attr("y", 205)
+      .attr("width", 15)
+      .attr("height", 15)
+     .style("fill", "#3e9ad6"); //blue
+
+     legend.append("rect")
+       .attr("x", 1050)
+       .attr("y", 235)
+       .attr("width", 15)
+       .attr("height", 15)
+      .style("fill", "#e45c1e"); //orange
 
 
-   legend.append("text")
-    .attr("x", 1030)
-    .attr("y", 100)
-    .text(" = 1 movie")
-   .attr("font-size", "12px");
+     legend.append("text")
+      .attr("x", 1110)
+      .attr("y", 157)
+      .text(" = 1 movies")
+     .attr("font-size", "15px"); //purple square label
+
+     legend.append("text")
+      .attr("x", 1110)
+      .attr("y", 187)
+      .text(" = 2 movies")
+     .attr("font-size", "15px"); //green square label
+
+     legend.append("text")
+      .attr("x", 1110)
+      .attr("y", 217)
+      .text(" = 3 movies")
+     .attr("font-size", "15px"); //blue square label
+
+     legend.append("text")
+      .attr("x", 1148)
+      .attr("y", 247)
+      .text(" = greater than 3 movies")
+     .attr("font-size", "15px"); //orange square label
+
+     svg.append("text")
+     .attr("x", 1130)
+     .attr("y", 110)
+     .style("font-size", "12px")
+     .text("*circle radius proportional to facebook likes");
 
 
 
