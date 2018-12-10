@@ -461,6 +461,19 @@ var legend = svg.append("g")
      .style("font-family", "Montserrat")
      .style("font-size", "15px")
      .text("Click on actor's circle to see costars!");
+      svg.append("text")
+     .attr("x", 1130)
+     .attr("y", 330)
+     .style("font-family", "Montserrat")
+     .style("font-size", "15px")
+     .text("Click again to make them disappear.");
+      svg.append("text")
+     .attr("x", 1130)
+     .attr("y", 345)
+     .style("font-family", "Montserrat")
+     .style("font-size", "12px")
+     .text("*line width is proportional to movies shared.");
+     
 
      if(year == null) {
        svg.append("text")
