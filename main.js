@@ -5,14 +5,14 @@
 
   // TITLE
     svg.append("text")
-    .attr("x", 1100)
+    .attr("x", 1000)
     .attr("y", 0 )
     .attr("dy", "3.5em" )
     .attr("text-anchor", "start")
     .style("font-size", "28px")
     .style("font-weight", "bold")
     .style("font-family","Montserrat")
-    .text("Actors and Their Co-Stars")
+    .text("Actors and Their Co-Stars in" + year)
 
     ///LENS///////////////
     const lens = {
