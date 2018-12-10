@@ -136,7 +136,7 @@ var year;
       //check csv 3 times to get all actors///////
       actors = {};
       data.forEach(function(d) {
-        
+
         if(d.title_year == year){
 
         if(actors[d.actor_1_name] != null) {
@@ -246,13 +246,13 @@ var year;
                     actors = {};
                     buildChart(data);
                 }
-                
+
                   for(var k = 0; k < keys.length; k++) {
                     circGen(actors[keys[k]]);
                   }
 
-                
-            }); 
+
+            });
     });
 
 
@@ -473,7 +473,7 @@ var legend = svg.append("g")
      .style("font-family", "Montserrat")
      .style("font-size", "12px")
      .text("*line width is proportional to movies shared.");
-     
+
 
      if(year == null) {
        svg.append("text")
