@@ -4,7 +4,15 @@
     <meta charset="UTF-8"/>
     <title>P5 by: Daisha B. / Courtney R.</title>
     <style>
-
+    body {
+      margin: 0;
+      padding: 0;
+      /*overflow: hidden;*/
+      background: #f0f0f0;
+      color: #333;
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.5;
+    }
     div.tooltip {
       position: absolute;
       text-align: center;
@@ -16,6 +24,12 @@
       border: 0px;
       border-radius: 8px;
       pointer-events: none;
+    }
+    div#filter {
+    position: relative;
+    /* top: 100px; */
+    left: 1000px;
+    bottom: 550px;
     }
     </style>
   </head>
@@ -51,6 +65,7 @@
     .attr("y", 0)
     .attr("dy", "3.5em" )
     .attr("text-anchor", "start")
+    .style("font-family", "Montserrat")
     .style("font-size", "26px")
     .style("font-weight", "bold")
     .text("Actors and Their Co-Stars in " + year)
@@ -76,45 +91,49 @@ var year;
   var i = 0;
   var count = 0;
     d3.csv("movies.csv", function(data) {
-            var collator = new Intl.Collator(undefined, {
-                numeric: true,
-                sensitivity: 'base'
-            });
+
+      //MAKING CHECK BOXES///////////
+      var collator = new Intl.Collator(undefined, {
+          numeric: true,
+          sensitivity: 'base'
+      });
       // Filter on this column
-            var filter_on = 'title_year';
+      var filter_on = 'title_year';
 
-            // Building an array with the values to filter on
-            var filter_list = d3.map(data, function (d) {
-                return d[filter_on];
-            }).keys()
+      // Building an array with the values to filter on
+      var filter_list = d3.map(data, function (d) {
+          return d[filter_on];
+      }).keys()
+      // Sort filter_list naturally
+      filter_list.sort(collator.compare);
+      // Building the filter checkboxes
+      d3.select("#filter")
+          .selectAll("input")
+          .data(filter_list)
+          .enter()
+          .append("label")
+          .append("input")
+          .attr("type", "checkbox")
+          .attr("class", "filter-check")
+          .attr("x", 1100)
+          .attr("y", 300)
+          .attr("value", function (d) {
+              return d
+          })
+          .attr("id", function (d) {
+              return d
+          });
 
-            // Sort filter_list naturally
-            filter_list.sort(collator.compare);
-            console.log(filter_list);
-            // Building the filter checkboxes
-            d3.select("#filter")
-                .selectAll("input")
-                .data(filter_list)
-                .enter()
-                .append("label")
-                .append("input")
-                .attr("type", "checkbox")
-                .attr("class", "filter-check")
-                .attr("value", function (d) {
-                    return d
-                })
-                .attr("id", function (d) {
-                    return d
-                });
+      d3.selectAll("label")
+          .data(filter_list)
+          .attr("class", "checkbox")
+          .append("text").text(function (d) {
+              return " " + d
+          })
 
-            d3.selectAll("label")
-                .data(filter_list)
-                .attr("class", "checkbox")
-                .append("text").text(function (d) {
-                    return " " + d
-                })
+
       function buildChart(data) {
-      //check csv 3 times to get all actors
+      //check csv 3 times to get all actors///////
       actors = {};
       data.forEach(function(d) {
         
@@ -197,11 +216,6 @@ var year;
        var checkBox = d3.selectAll(".filter-check")
             checkBox.on("change", function () {
 
-
-                ////////////////////////////
-                // Manage data and URL state
-                ////////////////////////////
-
                 // When checkbox changes, refresh choices array with checked values
                 var choices = []
                 var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
@@ -218,9 +232,12 @@ var year;
                     checkBox.remove();
                     d3.select(".switcher").remove();
                     svg.append("text")
-                     .attr("x", 1130)
-                     .attr("y", 510)
-                     .style("font-size", "15px")
+                     .attr("x", 1160)
+                     .attr("y", 410)
+                     .attr("class", "switcher")
+                     .style("font-size", "18px")
+                     .style("font-weight", "bold")
+                     .style("font-family", "Montserrat")
                      .text("You Chose " + year + "! Refresh to Try Again.");
 
                 } else {
@@ -372,6 +389,7 @@ var legend = svg.append("g")
  .attr("y", 135)
  .style("font-size", "18px")
  .style("font-weight", "bold")
+ .style("font-family", "Montserrat")
  .text("Movie Range:");
 
   legend.append("rect")
@@ -406,6 +424,7 @@ var legend = svg.append("g")
      legend.append("text")
       .attr("x", 1110)
       .attr("y", 157)
+      .style("font-family", "Montserrat")
       .text(" = 1 movies")
      .attr("font-size", "15px"); //purple square label
 
@@ -418,33 +437,39 @@ var legend = svg.append("g")
      legend.append("text")
       .attr("x", 1110)
       .attr("y", 217)
+      .style("font-family", "Montserrat")
       .text(" = 3 movies")
      .attr("font-size", "15px"); //blue square label
 
      legend.append("text")
       .attr("x", 1148)
       .attr("y", 247)
+      .style("font-family", "Montserrat")
       .text(" = greater than 3 movies")
      .attr("font-size", "15px"); //orange square label
 
      svg.append("text")
      .attr("x", 1130)
      .attr("y", 110)
+     .style("font-family", "Montserrat")
      .style("font-size", "12px")
      .text("*circle radius proportional to facebook likes");
 
      svg.append("text")
      .attr("x", 1130)
      .attr("y", 310)
+     .style("font-family", "Montserrat")
      .style("font-size", "15px")
      .text("Click on actor's circle to see costars!");
 
      if(year == null) {
        svg.append("text")
-     .attr("x", 1130)
-     .attr("y", 510)
+     .attr("x", 1160)
+     .attr("y", 410)
      .attr("class", "switcher")
-     .style("font-size", "15px")
+     .style("font-size", "18px")
+     .style("font-weight", "bold")
+     .style("font-family", "Montserrat")
      .text("Choose Which Year You'd Like to See!");
      }
 
