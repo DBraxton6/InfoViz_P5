@@ -304,21 +304,21 @@ function click(d) {
   inout();
 }
 
-function inout() {
-  d3.selectAll(".journal").classed("clicked", d => d.name === clicked);
+// function inout() {
+//   d3.selectAll(".journal").classed("clicked", d => d.name === clicked);
 
-  if (clicked === -1) {
-    d3.select("#inout")
-      .transition()
-      .style("opacity", 0);
-    setTitle("");
-    return;
-  }
+//   if (clicked == -1) {
+//     d3.select("#inout")
+//       .transition()
+//       .style("opacity", 0);
+//     setTitle("");
+//     return;
+//   }
 
-  setTitle(d.name);
+//   setTitle(d.name);
 
-  updatePositions();
-}
+//   updatePositions();
+// }
 
 // var drag = d3.behavior.drag()
 //   .on("dragstart", function() {
@@ -347,6 +347,3 @@ function setTitle(title) {
   const w = text.node().getBBox().width;
   d3.select("svg g#maintitle rect").attr("width", !w ? 0 : w + 2 * 9);
 }
-=======
-
->>>>>>> e10cb4cddb7b0b543bb825cbf49448a0cd1dfcda

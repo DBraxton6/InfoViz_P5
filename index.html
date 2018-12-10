@@ -17,7 +17,6 @@
       border-radius: 8px;
       pointer-events: none;
     }
-
     </style>
   </head>
 
@@ -35,11 +34,8 @@
    <body>
     <svg width="1325" height="1000" font-family="Montserrat" font-size="10" text-anchor="middle"></svg>
     <script type="text/javascript" src="d3.js"></script>
-    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
-<!--    <div id="wrapper">
-    <div id="p5Map"></div>
-    <div id="drawArea"></div>
-   </div> -->
+
+
   <script>
   // SPACE
     var svg = d3.select("svg"),
@@ -54,97 +50,13 @@
     .attr("text-anchor", "start")
     .style("font-size", "26px")
     .style("font-weight", "bold")
-    .text("Actors and Their Co-Stars ")
+    .text("Actors and Their Co-Stars in 2011")
 
 //Tooltip - HOVER
   var div = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
-/*  function tooltip(
-  id,
-  w,
-  h,
-  title,
-  text1 = "",
-  text2 = "",
-  value1 = "",
-  value2 = ""
-) {
-  const cursor = d3.mouse(d3.select("svg").node());
-  d3.selectAll(".tooltip").remove();
-  const tooltip = d3
-    .select("g#tooltip")
-    .append("g")
-    .classed("tooltip", true)
-    .attr("id", id);
 
-  const rect = tooltip
-    .append("rect")
-    .classed("background", true)
-    .attr("x", 0)
-    .attr("y", 0)
-    .style("filter", "url(#drop-shadow)");
-
-// two key/values max rn
-  const text = tooltip
-    .append("text")
-    .classed("text", true)
-    .attr("x", 0)
-    .attr("y", 0);
-
-  function appendTspan(t, c, x, dy, text) {
-    if (text !== "")
-      t.append("tspan")
-        .classed(c, true) //if labeled then open box
-        .attr("x", x)
-        .attr("dy", dy)
-        .text(text);
-  }
-
-  appendTspan(text, "title", 5, "1em", title);
-  appendTspan(text, "detail", 5, "1.2em", text1);
-  appendTspan(text, "detail", "4.5em", 0, value1);
-  appendTspan(text, "detail", 5, "1em", text2);
-  appendTspan(text, "detail", "4.5em", 0, value2);
-
-  // Position
-  const bbox = text.node().getBBox();
-  rect
-    .attr("width", bbox.width + 10)
-    .attr("height", bbox.height + 11)
-    .attr("y", -4);
-
-  // Manage the bottom and right edges
-  let x = cursor[0];
-  let y = cursor[1] + 26;
-  if (x + bbox.width + 8 + 2 > w) x = x - bbox.width - 10;
-  if (y + bbox.height + 26 + 2 > h) y = y - bbox.height - 10 - 26;
-  tooltip.attr("transform", `translate(${x},${y})`);
-} */
-
-
-    // .style("font-family","Montserrat")
-    // .text("Actors and Their Co-Stars")
-
-    // ///LENS///////////////
-    // const lens = {
-    // radius: 150,
-    // scale: 5,
-    // x: 500,
-    // y: 1000 * 0.33
-    // };
-
-    // var drag = d3.behavior.drag()
-    //   .on("dragstart", function() {
-    //     d3.event.sourceEvent.stopPropagation()
-    //   })
-    //   .on("drag", dragmove);
-
-    // svg.append("circle").attr("r", lens.radius).attr("id", "lens").call(drag);
-    // // lens.x = 1000 * 0.5;
-    // // lens.y = 500;
-    // updatePositions();
-    // add_interaction(svg.node());
 
   // PLACEMENT OF ALL ACTORS//////////////////////////
 var data = {};
@@ -153,6 +65,7 @@ var posY = [789, 636, 656, 121, 229, 429, 649, 107, 650, 795, 247, 151, 507, 668
 
 const actors = {};
 var keys = [];
+var year = 2011;
 
 
 
@@ -163,7 +76,7 @@ var keys = [];
 
       //check csv 3 times to get all actors
       data.forEach(function(d) {
-        if(d.title_year == 2011){
+        if(d.title_year == year){
 
         if(actors[d.actor_1_name] != null) {
           actors[d.actor_1_name].movies += 1;
@@ -367,194 +280,7 @@ var keys = [];
    }
 
   }
-  // function click(d) {
-  //  // d3.event.stopPropagation();
-  // var costars = d.costarNames;
-  // console.log(d);
-  //   //switch click
-  //   if (d === undefined || d.name === clicked) {
-  //     clicked = -1;
-  //     d3.selectAll("#" + d.name).classed("clicked", false);
-  //     for (var i = 0; i < costars.length; i++) {
-  //       d3.selectAll("#" + costars[i]).classed("affected", false);
-  //     }
 
-  //   } else {
-  //     clicked = d.name;
-  //     d3.selectAll("#" + d.name).classed("clicked", true);
-  //     for (var i = 0; i < costars.length; i++) {
-  //       d3.selectAll("#" + costars[i]).classed("affected", true);
-  //       makeLine(d, actors[costars[i]]);
-  //     }
-  //   }
-  // }
-
-  //IF CLICKED OR HOVERED////////////////
-
-
-    // Create Event Handlers for mouse
-
-  // function handleMouseOver(d, i) {  // Add interactivity
-  //   // Use D3 to select element, change color and size
-  //   d3.select(this).attr({
-  //     fill: "orange",
-  //     r: r * 2
-  //   });
-  //
-  //   // Specify where to put label of text
-  //   svg.append("text").attr({
-  //      id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
-  //       x: function() { return xScale(d.x) - 30; },
-  //       y: function() { return yScale(d.y) - 15; }
-  //   })
-  //   .text(function() {
-  //     return [d.x, d.y];  // Value of the text
-  //   });
-  // }
-  // function handleMouseOut(d, i) {
-  //   // Use D3 to select element, change color back to normal
-  //   d3.select(this).attr({
-  //     fill: "black",
-  //     r: r
-  //   });
-  //
-  //   // Select text by id and then remove
-  //   d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
-  // }
-
-
-
-//   //ADD LENS TO ZOOM FOR INFO/////////////////
-
-//   function updatePositions(actor) {
-//     d3.select("svg #lens")
-//     .attr("r", lens.radius)
-//     .attr("transform", "translate(" + lens.x + "," + lens.y + ")");
-
-//     //all possible affected circs
-//     let change = d3.select("#actors").selectAll(".leaf");
-
-//     change.attr("transform", (d, i, e) => { //lol
-//       console.log(d);
-//     let pos = [d.x, d.y]; //actor position
-
-//     let diffX = pos[0] - lens.x,
-//       diffY = pos[1] - lens.y,
-//       dist = Math.sqrt(diffX ** 2 + diffY ** 2), //distance formula
-//       diffUniX = diffX / dist,
-//       diffUniY = diffY / dist,
-//       targetX,
-//       targetY;
-//     if (dist < lens.radius) {
-//       targetX = lens.x + lens.scale * diffX;
-//       targetY = lens.y + lens.scale * diffY;
-//     } else {
-//       targetX = lens.x + diffUniX * (dist - lens.radius);
-//       targetY = lens.y + diffUniY * (dist - lens.radius);
-//     }
-//     pos[0] += (targetX - pos[0]) * 0.8;
-//     pos[1] += (targetY - pos[1]) * 0.8;
-//     //if in the lens or out
-//     if (dist < lens.radius) {
-//       d3.select(e[i]).classed("labeled", true);
-//     } else {
-//       d3.select(e[i]).classed("labeled", false);
-//     }
-//     return "translate(${pos})";
-//   });
-//   }
-
-//   function zoomSlightly() {
-//   if (zoom <= 1) {
-//     zoom = 1.2;
-//     updatePositions(/*transition*/ true);
-//   }
-// }
-
-//   //Drag lens/////////////////////
-//   function add_interaction(chart) {
-
-//   var drag = d3.behavior.drag()
-//   .on("dragstart", function() {
-//     d3.event.sourceEvent.stopPropagation()
-//   })
-//   .on("drag", dragmove);
-//   /* drag the lens */
-//   // const drag = d3.drag();
-//   // drag
-//   //   .on("start", function() {
-//   //     lens.x0 = lens.x - d3.event.x;
-//   //     lens.y0 = lens.y - d3.event.y;
-//   //   })
-//   //   .on("drag", function() {
-//   //     lens.x = lens.x0 + d3.event.x;
-//   //     lens.y = lens.y0 + d3.event.y;
-
-//   //   });
-
-//   zoom = 1;
-//   svg.on("touch mousedown", zoomSlightly).call(drag);
-//   svg.selectAll(".leaf circle").on("click", click);
-//   svg.on("click", click);
-
-// }
-// function click(d) {
-//   d3.event.stopPropagation();
-//   if (d === undefined || d.name === clicked) {
-//     clicked = -1;
-//   } else {
-//     clicked = d.name;
-//   }
-//   //inout();
-// }
-
-
-// //Drag handler
-// function dragmove(d) {
-//   var x = d3.event.x;
-//   var y = d3.event.y;
-//   d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
-//   for (var i = 0; i < posX.length; i++) {
-//     let pos = [posx[i], posY[i]]; //actor position
-
-//     let diffX = pos[0] - lens.x,
-//       diffY = pos[1] - lens.y,
-//       dist = Math.sqrt(diffX ** 2 + diffY ** 2), //distance formula
-//       diffUniX = diffX / dist,
-//       diffUniY = diffY / dist,
-//       targetX,
-//       targetY;
-//     if (dist < lens.radius) {
-//       targetX = lens.x + lens.scale * diffX;
-//       targetY = lens.y + lens.scale * diffY;
-//     } else {
-//       targetX = lens.x + diffUniX * (dist - lens.radius);
-//       targetY = lens.y + diffUniY * (dist - lens.radius);
-//     }
-//     pos[0] += (targetX - pos[0]) * 0.8;
-//     pos[1] += (targetY - pos[1]) * 0.8;
-
-//     //if in the lens or out
-//     if (dist < lens.radius) {
-//       //get the actor name and print it
-//       d3.select(e[i]).classed("labeled", true);
-//     } else {
-//       //get rid of the actor name
-//       d3.select(e[i]).classed("labeled", false);
-//     }
-//   }
-//   updatePositions(); //check circle labels
-// };
-
-
-// //Second node
-// var g2 = svg.append("g")
-//   .attr("transform", "translate(" + 250 + "," + 300 + ")")
-//   .call(drag)
-//   .append("circle").attr({
-//     r: lens.radius,
-//   })
-//   .style("fill", "#00F");
 
 var legend = svg.append("g")
  .attr("class","legend");
@@ -625,8 +351,11 @@ var legend = svg.append("g")
      .style("font-size", "12px")
      .text("*circle radius proportional to facebook likes");
 
-
-
+     svg.append("text")
+     .attr("x", 1130)
+     .attr("y", 310)
+     .style("font-size", "15px")
+     .text("Click on actor's circle to see costars!");
 
 
   </script>
